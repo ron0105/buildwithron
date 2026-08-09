@@ -8,6 +8,7 @@ interface Props {
   vpa: string
   upiUri: string
   qrSvg: string
+  apps: { label: string; href: string }[]
 }
 
 /*
@@ -15,11 +16,12 @@ interface Props {
   costs the reader a beat while React hydrates. This page gets opened by someone
   standing in front of Rohan waiting to pay him, so it paints and it is done.
 */
-export default function PayHero({ vpa, upiUri, qrSvg }: Props) {
+export default function PayHero({ vpa, upiUri, qrSvg, apps }: Props) {
   const { t } = useLanguage()
 
   return (
-    <section className="min-h-screen flex flex-col px-5 sm:px-6 pt-20 sm:pt-28 pb-16 bg-paper">
+    /* card-palette pins the printed card's colours here in both themes. */
+    <section className="card-palette min-h-screen flex flex-col px-5 sm:px-6 pt-20 sm:pt-28 pb-16 bg-paper">
       <div className="max-w-md mx-auto w-full">
         <h1 className="font-heading font-bold text-4xl sm:text-5xl text-ink leading-tight text-center">
           {t.payTitle}<span className="text-accent">.</span>
@@ -40,6 +42,27 @@ export default function PayHero({ vpa, upiUri, qrSvg }: Props) {
           {t.payOpenApp}
           <span aria-hidden="true">→</span>
         </a>
+
+        {/*
+          Named apps, for iPhone. The generic upi: intent above is an Android
+          mechanism; on iOS it frequently resolves to nothing, and a dead
+          primary button with no visible alternative is the worst outcome on a
+          page someone opened specifically to hand over money.
+        */}
+        <p className="font-body text-sm text-muted text-center mt-8 mb-3">
+          {t.payPickApp}
+        </p>
+        <div className="grid grid-cols-3 gap-2">
+          {apps.map((app) => (
+            <a
+              key={app.label}
+              href={app.href}
+              className="rounded-lg border border-border px-1 py-3 text-center font-body text-[13px] whitespace-nowrap text-muted hover:border-ink hover:text-ink transition-colors duration-200"
+            >
+              {app.label}
+            </a>
+          ))}
+        </div>
 
         <p className="font-body text-sm text-muted text-center mt-8 mb-3">
           {t.payOrCopy}

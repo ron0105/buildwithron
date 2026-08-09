@@ -44,6 +44,33 @@ export function upiUri(amount?: number): string {
 }
 
 /*
+  Per-app deep links.
+
+  `upi://pay` is the generic NPCI intent. On Android it raises the app chooser
+  with the payee already filled in, which is the whole experience we want. iOS
+  has no equivalent intent system and the Indian UPI apps do not reliably claim
+  the `upi:` scheme there, so on an iPhone that button can do nothing at all.
+
+  These named schemes give an iPhone user something to aim at. They are still
+  best-effort: whether a given app answers depends on that app's build, so the
+  copyable ID and the QR below them remain the only guaranteed paths and must
+  never be removed.
+*/
+export const payApps = [
+  { label: 'Google Pay', scheme: 'tez://upi/pay' },
+  { label: 'PhonePe', scheme: 'phonepe://pay' },
+  { label: 'Paytm', scheme: 'paytmmp://pay' },
+] as const
+
+export function appUri(scheme: string): string {
+  return `${scheme}?${new URLSearchParams({
+    pa: pay.vpa,
+    pn: pay.payeeName,
+    cu: pay.currency,
+  }).toString().replace(/\+/g, '%20')}`
+}
+
+/*
   Rendered on the server at build time, so the markup ships inside the HTML.
   No image request, no client-side QR library, nothing to hydrate before the
   code is scannable.
@@ -56,6 +83,9 @@ export async function upiQrSvg(): Promise<string> {
     type: 'svg',
     errorCorrectionLevel: 'M',
     margin: 1,
-    color: { dark: '#0D0D0D', light: '#FFFFFF' },
+    /* The printed card's ink on the printed card's stock, so the on-screen code
+       and the one in your pocket are the same object. Contrast is far above
+       what any scanner needs. */
+    color: { dark: '#0B1410', light: '#EEE7D9' },
   })
 }
