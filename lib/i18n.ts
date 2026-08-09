@@ -161,6 +161,18 @@ const en = {
   linkNoteStudio: 'Consulting: strategy, automation, storytelling',
   linkNoteEmail: 'For longer conversations',
   linkHandleStudio: 'My studio',
+  linkHandlePay: 'UPI',
+  linkNotePay: 'Send money straight to my UPI',
+
+  /* Pay */
+  payTitle: 'Pay me',
+  payLead: 'UPI, straight to my personal account. Type the amount yourself.',
+  payOpenApp: 'Open my UPI app',
+  payOrCopy: 'or copy the ID',
+  payCopy: 'Copy',
+  payCopied: 'Copied',
+  payScan: 'Paying from another phone? Scan this.',
+  payFootnote: 'Personal account. Work invoiced by The Adda Labs is billed separately.',
 
   /* Contact page */
   contactLabel: 'Say hi',
@@ -350,6 +362,18 @@ const hi: Dict = {
   linkNoteStudio: 'कंसल्टिंग: रणनीति, ऑटोमेशन, कहानी',
   linkNoteEmail: 'लंबी बातचीत के लिए',
   linkHandleStudio: 'मेरा स्टूडियो',
+  linkHandlePay: 'UPI',
+  linkNotePay: 'सीधे मेरे UPI पर पैसे भेजें',
+
+  /* Pay */
+  payTitle: 'पैसे भेजें',
+  payLead: 'UPI, सीधे मेरे निजी खाते में। रकम आप खुद डालें।',
+  payOpenApp: 'मेरा UPI ऐप खोलें',
+  payOrCopy: 'या ID कॉपी करें',
+  payCopy: 'कॉपी',
+  payCopied: 'कॉपी हो गया',
+  payScan: 'दूसरे फ़ोन से भेज रहे हैं? यह स्कैन करें।',
+  payFootnote: 'निजी खाता। The Adda Labs का काम अलग से बिल होता है।',
 
   contactLabel: 'नमस्ते कहें',
   contactSub:
@@ -530,6 +554,18 @@ const mr: Dict = {
   linkNoteStudio: 'सल्ला: रणनीती, ऑटोमेशन, कथा',
   linkNoteEmail: 'सविस्तर संवादासाठी',
   linkHandleStudio: 'माझा स्टुडिओ',
+  linkHandlePay: 'UPI',
+  linkNotePay: 'थेट माझ्या UPI वर पैसे पाठवा',
+
+  /* Pay */
+  payTitle: 'पैसे पाठवा',
+  payLead: 'UPI, थेट माझ्या वैयक्तिक खात्यात. रक्कम तुम्हीच टाका.',
+  payOpenApp: 'माझं UPI अ‍ॅप उघडा',
+  payOrCopy: 'किंवा ID कॉपी करा',
+  payCopy: 'कॉपी',
+  payCopied: 'कॉपी झालं',
+  payScan: 'दुसऱ्या फोनवरून पाठवताय? हे स्कॅन करा.',
+  payFootnote: 'वैयक्तिक खातं. The Adda Labs चं काम वेगळं बिल होतं.',
 
   contactLabel: 'नमस्कार करा',
   contactSub:
@@ -709,6 +745,18 @@ const es: Dict = {
   linkNoteStudio: 'Consultoría: estrategia, automatización, narrativa',
   linkNoteEmail: 'Para conversaciones largas',
   linkHandleStudio: 'Mi estudio',
+  linkHandlePay: 'UPI',
+  linkNotePay: 'Envíame dinero por UPI',
+
+  /* Pay */
+  payTitle: 'Págame',
+  payLead: 'UPI, directo a mi cuenta personal. El importe lo pones tú.',
+  payOpenApp: 'Abrir mi app de UPI',
+  payOrCopy: 'o copia el ID',
+  payCopy: 'Copiar',
+  payCopied: 'Copiado',
+  payScan: '¿Pagas desde otro móvil? Escanea esto.',
+  payFootnote: 'Cuenta personal. El trabajo de The Adda Labs se factura aparte.',
 
   contactLabel: 'Saluda',
   contactSub:
