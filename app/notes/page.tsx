@@ -1,6 +1,7 @@
 import Nav from '@/components/sections/Nav'
 import ThinkingHero from '@/components/sections/thinking/ThinkingHero'
 import NotesList from '@/components/sections/notes/NotesList'
+import JoinList from '@/components/sections/JoinList'
 import Footer from '@/components/sections/Footer'
 import { getNotes } from '@/lib/content'
 
@@ -16,6 +17,7 @@ export default function NotesPage() {
       <Nav />
       <ThinkingHero />
       <NotesList notes={notes} />
+      <JoinList />
       <Footer />
     </main>
   )

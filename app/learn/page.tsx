@@ -1,6 +1,7 @@
 import Nav from '@/components/sections/Nav'
 import LearnHero from '@/components/sections/learn/LearnHero'
 import EpisodeList from '@/components/sections/learn/EpisodeList'
+import JoinList from '@/components/sections/JoinList'
 import Footer from '@/components/sections/Footer'
 import { getEpisodes, getNow } from '@/lib/content'
 
@@ -17,6 +18,7 @@ export default function LearnPage() {
       <Nav />
       <LearnHero />
       <EpisodeList episodes={episodes} upcoming={upcoming} />
+      <JoinList />
       <Footer />
     </main>
   )

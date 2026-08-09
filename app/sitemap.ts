@@ -4,7 +4,7 @@ import { getNotes, getEpisodes } from '@/lib/content'
 const BASE = 'https://buildwithron.com'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const staticPages = ['', '/work', '/learn', '/notes', '/about', '/contact', '/links'].map(
+  const staticPages = ['', '/work', '/learn', '/notes', '/about', '/contact', '/links', '/privacy'].map(
     (p) => ({ url: `${BASE}${p}`, lastModified: new Date() })
   )
   const notes = getNotes().map((n) => ({
