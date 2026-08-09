@@ -70,6 +70,38 @@ body::after {
 }
 
 
+/* Wallet-card palette.
+
+   /pay is the digital half of a printed card, so the two have to read as one
+   object. These are pinned in both light and dark mode on purpose: the card is
+   a physical thing with fixed inks, and a page that flips theme underneath it
+   would break the match exactly when someone is holding the card.
+
+   Values are the exact sRGB conversions of the design system's OKLCH tokens
+   (see content/assets/wallet-card/build-v2.js for the full table). Overriding
+   the same --color-* names Tailwind already maps means every existing
+   bg-paper / text-ink / text-accent utility resolves to card colours with no
+   new class names.
+
+   Note this is NOT .always-dark. That helper pins vars to their LIGHT values so
+   a block stays dark in both themes, which is why bg-ink on it painted #0D0D0D
+   on a #111111 page in dark mode. This sets the values it actually wants. */
+.card-palette {
+  --color-paper: #0B1410;
+  --color-paper-dark: #16221D;
+  --color-ink: #E9E9ED;
+  --color-muted: #9397AB;
+  --color-border: #16221D;
+  --color-accent: #508870;
+}
+
+/* The section covers the viewport, but the body behind it does not, so an
+   overscroll bounce flashes the site's cream through at the top and bottom.
+   That is a phone-only artefact and this is a phone-only page. */
+body:has(.card-palette) {
+  background-color: #0B1410;
+}
+
 /* Page transition.
 
    This is a CSS animation rather than a framer-motion one on purpose. The
