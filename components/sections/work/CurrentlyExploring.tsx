@@ -1,8 +1,11 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import { useLanguage } from '@/context/LanguageContext'
 
 export default function CurrentlyExploring() {
+  const { t } = useLanguage()
+
   return (
     <section className="py-10 px-6 bg-paper border-t border-border">
       <div className="max-w-6xl mx-auto">
@@ -18,10 +21,10 @@ export default function CurrentlyExploring() {
             <span className="relative inline-flex rounded-full h-2 w-2 bg-accent" />
           </span>
           <span className="font-body text-xs text-muted tracking-widest uppercase">
-            Currently building:
+            {t.exploringLabel}
           </span>
           <span className="font-body text-sm text-ink font-medium">
-            The Adda Labs : a system for testing ideas before committing to them
+            {t.exploringText}
           </span>
         </motion.div>
       </div>

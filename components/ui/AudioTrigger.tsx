@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion'
 import { useAudio } from '@/context/AudioContext'
+import { useLanguage } from '@/context/LanguageContext'
 
 export default function AudioTrigger({
   className = '',
@@ -11,6 +12,7 @@ export default function AudioTrigger({
   iconOnly?: boolean
 }) {
   const { isPlaying, toggleAudio } = useAudio()
+  const { t } = useLanguage()
 
   return (
     <button
@@ -55,7 +57,7 @@ export default function AudioTrigger({
       </div>
       {!iconOnly && (
         <span className="text-[10px] sm:text-xs">
-          {isPlaying ? 'Playing my story' : 'Play how I think'}
+          {isPlaying ? t.audioPlaying : t.audioPlay}
         </span>
       )}
     </button>

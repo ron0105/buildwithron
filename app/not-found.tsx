@@ -1,7 +1,12 @@
+'use client'
+
 import Link from 'next/link'
 import Nav from '@/components/sections/Nav'
+import { useLanguage } from '@/context/LanguageContext'
 
 export default function NotFound() {
+  const { t } = useLanguage()
+
   return (
     <main>
       <Nav />
@@ -11,23 +16,23 @@ export default function NotFound() {
             404
           </span>
           <h1 className="font-heading font-bold text-[clamp(3rem,9vw,8rem)] leading-[1.0] tracking-tight text-ink">
-            Nothing here<span className="text-accent">.</span>
+            {t.nfTitle}<span className="text-accent">.</span>
           </h1>
           <p className="font-body text-xl md:text-2xl text-ink/60 max-w-2xl leading-relaxed mt-10">
-            This page doesn&apos;t exist. Unlike my cat&apos;s opinion of me — that one is very real and mostly unfavourable.
+            {t.nfSub}
           </p>
           <div className="flex items-center gap-8 mt-12">
             <Link
               href="/"
               className="font-body text-sm text-ink border border-border rounded-lg px-6 py-3 hover:border-ink transition-colors duration-200"
             >
-              Back home
+              {t.nfHome}
             </Link>
             <Link
               href="/learn"
               className="font-body text-sm text-muted hover:text-ink transition-colors duration-200"
             >
-              Or watch me test things live →
+              {t.nfLearn} →
             </Link>
           </div>
         </div>

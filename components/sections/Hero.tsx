@@ -16,6 +16,7 @@ import dynamic from 'next/dynamic'
 import { useState } from 'react'
 import AudioTrigger from '@/components/ui/AudioTrigger'
 import { useTheme } from '@/context/ThemeContext'
+import { useLanguage } from '@/context/LanguageContext'
 
 const ShaderCanvas = dynamic(() => import('@/components/ui/ShaderCanvas'), {
   ssr: false,
@@ -27,13 +28,12 @@ interface Ripple {
   y: number
 }
 
-const headingLines = ["I build stuff", "and film the", "messy parts."]
-
 export default function Hero() {
   const heroRef = useRef<HTMLElement>(null)
   const [ripples, setRipples] = useState<Ripple[]>([])
   const rippleId = useRef(0)
   const { theme } = useTheme()
+  const { t } = useLanguage()
   const paperColor = theme === 'dark' ? '#111111' : '#F7F6F3'
 
   /* Boolean state drives letter-spacing spring on heading */
@@ -315,7 +315,7 @@ export default function Hero() {
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-accent" />
               </span>
               <span className="font-body text-[10px] sm:text-xs text-muted tracking-widest uppercase">
-                Currently building: The Adda Labs · Learn With Ron
+                {t.heroBadge}
               </span>
             </motion.div>
 
@@ -331,7 +331,7 @@ export default function Hero() {
               onMouseEnter={handleHoverStart}
               onMouseLeave={handleHoverEnd}
             >
-              {headingLines.map((line, i) => (
+              {t.heroLines.map((line, i) => (
                 <motion.div
                   key={line}
                   initial={{ opacity: 0, y: 18 }}
@@ -347,7 +347,7 @@ export default function Hero() {
                         y: isFocused ? -2 : 0,
                       }}
                       transition={{ type: 'spring', stiffness: 120, damping: 18 }}
-                      className="font-heading font-bold text-[clamp(2.8rem,10vw,6.5rem)] leading-[1.02] tracking-tight text-ink"
+                      className="font-heading font-bold text-[clamp(2.1rem,6.6vw,4.2rem)] leading-[1.06] tracking-tight text-ink"
                     >
                     {line}
                   </motion.h1>
@@ -364,9 +364,9 @@ export default function Hero() {
               <motion.p
                 animate={{ opacity: isFocused ? 1 : 0.92 }}
                 transition={{ type: 'spring', stiffness: 120, damping: 18 }}
-                className="font-body text-base sm:text-lg md:text-xl text-ink/60 max-w-sm leading-relaxed mb-8 sm:mb-10"
+                className="font-body text-base sm:text-lg md:text-xl text-ink/60 max-w-md leading-relaxed mb-8 sm:mb-10"
               >
-                The Adda Labs is the company. Learn With Ron is the camera. Everything lands here.
+                {t.heroSub}
               </motion.p>
             </motion.div>
 
@@ -383,20 +383,20 @@ export default function Hero() {
                 href="/work"
                 className="inline-flex items-center gap-2 bg-ink text-paper font-body text-sm font-medium px-6 py-3.5 sm:px-7 sm:py-4 hover:bg-accent transition-colors duration-200"
               >
-                See the work →
+                {t.heroCta1} →
               </Link>
               <Link
                 href="/about"
                 className="font-body text-sm text-muted hover:text-ink transition-colors duration-200"
               >
-                About me
+                {t.heroCta2}
               </Link>
               <span
                 aria-hidden="true"
                 className="hidden sm:inline-block text-muted/70 text-xl"
                 style={{ fontFamily: 'var(--font-caveat), cursive', rotate: '-2deg' }}
               >
-                ↜ start here
+                ↜ {t.heroHint}
               </span>
             </motion.div>
 
@@ -421,7 +421,7 @@ export default function Hero() {
           className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 pointer-events-none"
         >
           <span className="font-body text-[10px] text-muted/40 tracking-[0.3em] uppercase">
-            Scroll
+            {t.heroScroll}
           </span>
           <motion.div
             animate={{ y: [0, 6, 0] }}

@@ -2,6 +2,7 @@
 
 import { useState, useCallback } from 'react'
 import { motion } from 'framer-motion'
+import { useLanguage } from '@/context/LanguageContext'
 
 /*
   "organic → structured" interaction system
@@ -13,6 +14,7 @@ import { motion } from 'framer-motion'
 
 export default function AboutHero() {
   const [isFocused, setIsFocused] = useState(false)
+  const { t } = useLanguage()
 
   const handleEnter = useCallback(() => setIsFocused(true), [])
   const handleLeave = useCallback(() => setIsFocused(false), [])
@@ -49,7 +51,7 @@ export default function AboutHero() {
           transition={{ duration: 0.3 }}
           className="font-body text-xs text-muted uppercase tracking-widest block mb-10"
         >
-          About
+          {t.aboutLabel}
         </motion.span>
 
         {/* Heading : entrance wrapper separates from interactive state */}
@@ -69,7 +71,7 @@ export default function AboutHero() {
             transition={lockIn}
             className="font-heading font-bold text-[clamp(3rem,9vw,8rem)] leading-[1.0] text-ink"
           >
-            Hi, I&apos;m Rohan
+            {t.aboutTitle}
             {/* Accent dot : pulses once on focus, anchors the heading */}
             <motion.span
               className="text-accent"
@@ -92,8 +94,7 @@ export default function AboutHero() {
             transition={lockIn}
             className="font-body text-xl md:text-2xl text-ink/60 max-w-2xl leading-relaxed mt-10"
           >
-            Co-founder of The Adda Labs, based in Mumbai.
-            I use AI to move faster, build in public, and share what I actually learn — not what looks good in hindsight.
+            {t.aboutSub}
           </motion.p>
         </motion.div>
       </div>

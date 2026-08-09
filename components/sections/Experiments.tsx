@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import { experiments } from '@/lib/data'
 import Link from 'next/link'
 import Image from 'next/image'
+import { useLanguage } from '@/context/LanguageContext'
 
 const statusConfig = {
   active: {
@@ -33,6 +34,8 @@ function ProjectCard({
   project: typeof experiments[0]
   index: number
 }) {
+  const { t } = useLanguage()
+  const copy = t.projects[project.id]
   const hasLink = Boolean(project.href && project.href !== '#')
 
   return (
@@ -71,7 +74,7 @@ function ProjectCard({
               {project.id}
             </span>
             <div className="flex gap-1.5">
-              {project.tags.slice(0, 1).map((tag) => (
+              {copy.tags.slice(0, 1).map((tag) => (
                 <span
                   key={tag}
                   className="font-body text-[10px] uppercase tracking-widest backdrop-blur-md bg-white/20 text-ink px-3 py-1 border border-ink/5"
@@ -91,7 +94,7 @@ function ProjectCard({
             <span className="text-muted/40 font-body text-xs">{project.year}</span>
           </div>
           <p className="font-body text-sm text-muted max-w-sm leading-relaxed">
-            {project.teaser}
+            {copy.teaser}
           </p>
         </div>
       </Link>
@@ -101,6 +104,7 @@ function ProjectCard({
 
 export default function Experiments() {
   const featured = experiments.slice(0, 4)
+  const { t } = useLanguage()
 
   return (
     <section id="experiments" className="relative z-20 w-full pt-12 sm:pt-20 pb-24 sm:pb-48 px-5 sm:px-6">
@@ -114,15 +118,15 @@ export default function Experiments() {
         >
           <div>
             <span className="font-body text-xs text-muted/60 uppercase tracking-[0.2em] block mb-6 px-1">
-              Selected Works
+              {t.expEyebrow}
             </span>
             <h2 className="font-heading text-4xl sm:text-5xl md:text-8xl font-bold text-ink leading-[0.9] tracking-tighter">
-              The Library<span className="text-accent">.</span>
+              {t.expTitle}<span className="text-accent">.</span>
             </h2>
           </div>
           <div className="hidden md:flex flex-col items-end gap-1 opacity-40">
-            <span className="font-body text-[10px] uppercase tracking-widest">Active Archives</span>
-            <span className="font-body text-xs tabular-nums tracking-widest">{experiments.length} Projects</span>
+            <span className="font-body text-[10px] uppercase tracking-widest">{t.expArchives}</span>
+            <span className="font-body text-xs tabular-nums tracking-widest">{experiments.length} {t.expProjects}</span>
           </div>
         </motion.div>
 
@@ -136,7 +140,7 @@ export default function Experiments() {
           href="/work"
           className="inline-flex items-center gap-3 font-body text-sm text-muted hover:text-ink transition-colors duration-200 group cursor-pointer"
         >
-          See all projects
+          {t.expSeeAll}
           <span className="group-hover:translate-x-1 transition-transform duration-200 inline-block">
             →
           </span>

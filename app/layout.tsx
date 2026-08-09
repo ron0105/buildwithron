@@ -1,10 +1,11 @@
 import type { Metadata } from 'next'
-import { Inter, Caveat } from 'next/font/google'
+import { Inter, Caveat, Noto_Sans_Devanagari } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/react'
 import './globals.css'
 import PageTransition from '@/components/ui/PageTransition'
 import { AudioProvider } from '@/context/AudioContext'
 import { ThemeProvider } from '@/context/ThemeContext'
+import { LanguageProvider } from '@/context/LanguageContext'
 
 const inter = Inter({
   subsets: ['latin'],
@@ -20,14 +21,24 @@ const caveat = Caveat({
   display: 'swap',
 })
 
+/* Inter carries no Devanagari glyphs, so Hindi and Marathi would fall back to
+   whatever the OS picks. This sits after Inter in the stack: Latin renders
+   Inter, Devanagari falls through to this, per character. */
+const notoDevanagari = Noto_Sans_Devanagari({
+  subsets: ['devanagari'],
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-devanagari',
+  display: 'swap',
+})
+
 export const metadata: Metadata = {
   metadataBase: new URL('https://buildwithron.com'),
   title: {
-    default: 'Rohan Tiwarekar — Founder & Builder',
+    default: 'Rohan Tiwarekar · Building in public',
     template: '%s',
   },
   description:
-    'Co-founder of The Adda Labs. Building a company and filming the journey — live AI experiments, honest notes, real work.',
+    'I build things and figure it out in public. Co-founder of The Adda Labs in Mumbai. Live sessions, honest notes, and the parts that break.',
 }
 
 export default function RootLayout({
@@ -36,7 +47,11 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={`${inter.variable} ${caveat.variable}`} suppressHydrationWarning>
+    <html
+      lang="en"
+      className={`${inter.variable} ${caveat.variable} ${notoDevanagari.variable}`}
+      suppressHydrationWarning
+    >
       <head>
         {/* Prevent flash of wrong theme on load */}
         <script dangerouslySetInnerHTML={{ __html: `
@@ -63,9 +78,11 @@ export default function RootLayout({
           <rect width="100%" height="100%" filter="url(#global-noise)" />
         </svg>
         <ThemeProvider>
-          <AudioProvider>
-            <PageTransition>{children}</PageTransition>
-          </AudioProvider>
+          <LanguageProvider>
+            <AudioProvider>
+              <PageTransition>{children}</PageTransition>
+            </AudioProvider>
+          </LanguageProvider>
         </ThemeProvider>
         <Analytics />
       </body>

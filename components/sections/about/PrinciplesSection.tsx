@@ -1,17 +1,20 @@
 'use client'
 
 import { motion } from 'framer-motion'
-
-const principles = [
-  { id: '01', text: 'Build to learn, not just to finish.' },
-  { id: '02', text: 'Clear is better than clever.' },
-  { id: '03', text: 'Make something real before making it perfect.' },
-  { id: '04', text: "If you can't explain it simply, you don't understand it yet." },
-  { id: '05', text: 'The work teaches you more than any plan.' },
-  { id: '06', text: "Say no to most things. Yes means something." },
-]
+import { useLanguage } from '@/context/LanguageContext'
 
 export default function PrinciplesSection() {
+  const { t } = useLanguage()
+
+  /* One line per value in ../../FOUNDATION.md. Keep them in the same order. */
+  const principles = [
+    { id: '01', text: t.belief1 },
+    { id: '02', text: t.belief2 },
+    { id: '03', text: t.belief3 },
+    { id: '04', text: t.belief4 },
+    { id: '05', text: t.belief5 },
+  ]
+
   return (
     <section className="py-28 px-6 bg-ink always-dark">
       <div className="max-w-6xl mx-auto">
@@ -22,7 +25,7 @@ export default function PrinciplesSection() {
           transition={{ duration: 0.3 }}
           className="font-body text-xs text-paper/25 uppercase tracking-widest block mb-20"
         >
-          What I believe
+          {t.beliefLabel}
         </motion.span>
 
         <div className="border-t border-paper/10">

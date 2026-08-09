@@ -6,19 +6,22 @@ import Link from 'next/link'
 import AudioTrigger from '@/components/ui/AudioTrigger'
 import { usePathname } from 'next/navigation'
 import { useTheme } from '@/context/ThemeContext'
-
-const links = [
-  { label: 'Work', href: '/work' },
-  { label: 'Learn', href: '/learn' },
-  { label: 'Notes', href: '/notes' },
-  { label: 'About', href: '/about' },
-]
+import { useLanguage } from '@/context/LanguageContext'
+import LanguageSwitcher from '@/components/ui/LanguageSwitcher'
 
 export default function Nav() {
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
   const pathname = usePathname()
   const { theme, toggleTheme } = useTheme()
+  const { t } = useLanguage()
+
+  const links = [
+    { label: t.navWork, href: '/work' },
+    { label: t.navLearn, href: '/learn' },
+    { label: t.navNotes, href: '/notes' },
+    { label: t.navAbout, href: '/about' },
+  ]
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 60)
@@ -58,12 +61,14 @@ export default function Nav() {
             ROH<span className="text-accent">A</span>N
           </Link>
 
-          {/* Desktop nav: centered to avoid hair overlap on right */}
-          <ul className="hidden md:flex items-center gap-10 absolute left-1/2 -translate-x-1/2">
+          {/* Desktop nav: flows between logo and right cluster. Was absolutely
+              centered, but the language switcher widened the right cluster and
+              the two collided; flow layout cannot overlap at any width. */}
+          <ul className="hidden md:flex items-center gap-8 lg:gap-10 mx-auto pl-8">
             {links.map((link) => {
               const isActive = pathname === link.href
               return (
-                <li key={link.label}>
+                <li key={link.href}>
                   <Link
                     href={link.href}
                     className={`font-body text-[11px] uppercase tracking-[0.2em] transition-all duration-300 relative group cursor-pointer ${
@@ -85,6 +90,7 @@ export default function Nav() {
 
           <div className="hidden md:flex items-center gap-8">
             <AudioTrigger />
+            <LanguageSwitcher />
             <button
               onClick={toggleTheme}
               aria-label={theme === 'light' ? 'Switch to dark mode' : 'Switch to light mode'}
@@ -112,7 +118,7 @@ export default function Nav() {
               href="/contact"
               className="bg-ink text-paper text-[10px] uppercase font-bold tracking-widest px-6 py-2.5 rounded-full hover:bg-accent transition-colors duration-300"
             >
-              Let's Talk
+              {t.navTalk}
             </Link>
           </div>
 
@@ -125,7 +131,7 @@ export default function Nav() {
               aria-label="Toggle menu"
               aria-expanded={menuOpen}
             >
-              {menuOpen ? 'Close' : 'Menu'}
+              {menuOpen ? t.navClose : t.navMenu}
             </button>
           </div>
         </div>
@@ -147,7 +153,7 @@ export default function Nav() {
                 const isActive = pathname === link.href
                 return (
                   <motion.li
-                    key={link.label}
+                    key={link.href}
                     initial={{ opacity: 0, x: -12 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.2, delay: i * 0.05 }}
@@ -172,12 +178,13 @@ export default function Nav() {
               transition={{ delay: 0.25 }}
               className="mt-10 pt-8 border-t border-border flex flex-col gap-5"
             >
+              <LanguageSwitcher variant="menu" />
               <AudioTrigger className="text-sm" />
               <Link
                 href="/contact"
                 className="inline-flex items-center justify-center bg-ink text-paper text-sm font-bold tracking-widest uppercase px-6 py-4 hover:bg-accent transition-colors duration-300 w-full"
               >
-                Let&apos;s Talk
+                {t.navTalk}
               </Link>
             </motion.div>
           </motion.div>

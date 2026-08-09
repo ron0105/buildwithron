@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import type { EpisodeMeta } from '@/lib/content'
+import { useLanguage } from '@/context/LanguageContext'
 
 /*
   The journey line — episodes as a chronological timeline.
@@ -16,6 +17,7 @@ export default function EpisodeList({
   episodes: EpisodeMeta[]
   upcoming?: { text: string; href: string } | null
 }) {
+  const { t } = useLanguage()
   const chronological = [...episodes].sort((a, b) => a.episode - b.episode)
 
   return (
@@ -69,7 +71,7 @@ export default function EpisodeList({
                   className="py-10 flex items-center gap-4"
                 >
                   <span className="font-body text-xs text-muted/50 uppercase tracking-widest shrink-0">
-                    Which opened the question
+                    {t.epOpened}
                   </span>
                   <p className="font-heading text-base md:text-lg italic text-ink/50 leading-snug">
                     &ldquo;{ep.nextTease}&rdquo;
@@ -97,7 +99,7 @@ export default function EpisodeList({
                 className="block group"
               >
                 <div className="flex items-center gap-3 mb-3">
-                  <span className="font-body text-xs text-muted tracking-widest">UP NEXT</span>
+                  <span className="font-body text-xs text-muted tracking-widest">{t.epUpNext}</span>
                   <span className="block w-5 h-px bg-border" />
                   <span className="relative flex h-2 w-2">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-60" />
@@ -108,7 +110,7 @@ export default function EpisodeList({
                   {upcoming.text}
                 </h2>
                 <p className="font-body text-sm text-muted mt-3">
-                  Catch it live on YouTube →
+                  {t.epCatchLive} →
                 </p>
               </motion.a>
             </div>

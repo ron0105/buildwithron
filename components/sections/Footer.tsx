@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion'
 import Link from 'next/link'
+import { useLanguage } from '@/context/LanguageContext'
 
 const socials = [
   { label: 'YouTube', href: 'https://www.youtube.com/@learn_withron' },
@@ -13,6 +14,8 @@ const socials = [
 ]
 
 export default function Footer() {
+  const { t } = useLanguage()
+
   return (
     <footer className="bg-ink py-16 sm:py-28 px-5 sm:px-6">
       <div className="max-w-6xl mx-auto">
@@ -27,11 +30,11 @@ export default function Footer() {
           <div>
             <Link href="/contact">
               <p className="font-heading text-4xl sm:text-5xl md:text-7xl font-bold text-paper mb-4 leading-none hover:text-accent transition-colors duration-200 cursor-pointer">
-                Let&apos;s talk<span className="text-accent">.</span>
+                {t.footerCta}<span className="text-accent">.</span>
               </p>
             </Link>
             <p className="font-body text-base text-paper/40 max-w-sm leading-relaxed">
-              Whether you have an idea or just want to think out loud, my inbox is open.
+              {t.footerSub}
             </p>
           </div>
 
@@ -61,7 +64,7 @@ export default function Footer() {
             Rohan
           </span>
           <span className="font-body text-xs text-paper/20">
-            Built in public. &copy; {new Date().getFullYear()}
+            {t.footerBuilt} &copy; {new Date().getFullYear()}
           </span>
         </div>
       </div>

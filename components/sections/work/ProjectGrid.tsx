@@ -3,26 +3,33 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import { useState } from 'react'
 import { experiments } from '@/lib/data'
+import { useLanguage } from '@/context/LanguageContext'
+import type { Dict } from '@/lib/i18n'
 
+/* Colours are static; only the label needs the dictionary. */
 const statusConfig = {
   active: {
-    label: 'Active',
+    labelKey: 'statusActive' as const,
     dot: 'bg-accent animate-pulse',
     text: 'text-accent',
     bg: 'bg-accent/8',
   },
   exploring: {
-    label: 'In progress',
+    labelKey: 'statusInProgress' as const,
     dot: 'bg-amber-400',
     text: 'text-amber-600',
     bg: 'bg-amber-400/10',
   },
   shipped: {
-    label: 'Live',
+    labelKey: 'statusLive' as const,
     dot: 'bg-emerald-500',
     text: 'text-emerald-600',
     bg: 'bg-emerald-500/10',
   },
+}
+
+function statusLabel(t: Dict, status: keyof typeof statusConfig) {
+  return t[statusConfig[status].labelKey]
 }
 
 function ProjectCard({
@@ -33,7 +40,9 @@ function ProjectCard({
   index: number
 }) {
   const [open, setOpen] = useState(false)
+  const { t } = useLanguage()
   const status = statusConfig[project.status]
+  const copy = t.projects[project.id]
 
   return (
     <motion.div
@@ -59,7 +68,7 @@ function ProjectCard({
               {/* Status pill */}
               <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium font-body ${status.bg} ${status.text}`}>
                 <span className={`w-1.5 h-1.5 rounded-full ${status.dot}`} />
-                {status.label}
+                {statusLabel(t, project.status)}
               </span>
             </div>
 
@@ -68,7 +77,7 @@ function ProjectCard({
             </h3>
 
             <p className="font-body text-base text-muted leading-relaxed max-w-xl">
-              {project.teaser}
+              {copy.teaser}
             </p>
           </div>
 
@@ -82,7 +91,7 @@ function ProjectCard({
               +
             </motion.span>
             <div className="hidden md:flex flex-wrap gap-1.5 justify-end mt-1">
-              {project.tags.map((tag) => (
+              {copy.tags.map((tag) => (
                 <span
                   key={tag}
                   className="font-body text-xs text-muted/50 border border-border px-2.5 py-1"
@@ -110,26 +119,26 @@ function ProjectCard({
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-6">
                 <div>
                   <span className="font-body text-xs text-muted uppercase tracking-widest block mb-3">
-                    Why I built it
+                    {t.projWhy}
                   </span>
                   <p className="font-body text-base text-ink/75 leading-relaxed">
-                    {project.why}
+                    {copy.why}
                   </p>
                 </div>
                 <div>
                   <span className="font-body text-xs text-muted uppercase tracking-widest block mb-3">
-                    What I did
+                    {t.projWhat}
                   </span>
                   <p className="font-body text-base text-ink/75 leading-relaxed">
-                    {project.what}
+                    {copy.what}
                   </p>
                 </div>
                 <div>
                   <span className="font-body text-xs text-muted uppercase tracking-widest block mb-3">
-                    What happened
+                    {t.projHappened}
                   </span>
                   <p className="font-body text-base text-ink/75 leading-relaxed">
-                    {project.learned}
+                    {copy.learned}
                   </p>
                 </div>
               </div>
@@ -137,7 +146,7 @@ function ProjectCard({
               {/* Footer row */}
               <div className="flex items-center justify-between pt-5 border-t border-border">
                 <div className="flex flex-wrap gap-1.5 md:hidden">
-                  {project.tags.map((tag) => (
+                  {copy.tags.map((tag) => (
                     <span
                       key={tag}
                       className="font-body text-xs text-muted/50 border border-border px-2.5 py-1"
@@ -155,7 +164,7 @@ function ProjectCard({
                     onClick={(e) => e.stopPropagation()}
                     className="inline-flex items-center gap-1 font-body text-xs text-muted hover:text-accent transition-colors duration-200 group/link"
                   >
-                    View project
+                    {t.projView}
                     <span className="inline-block transition-transform duration-200 group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5">
                       ↗
                     </span>

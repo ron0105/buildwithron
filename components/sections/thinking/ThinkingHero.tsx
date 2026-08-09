@@ -1,8 +1,11 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import { useLanguage } from '@/context/LanguageContext'
 
 export default function ThinkingHero() {
+  const { t } = useLanguage()
+
   return (
     <section className="min-h-[65vh] flex flex-col justify-end px-6 pt-40 pb-24 bg-paper">
       <div className="max-w-6xl mx-auto w-full">
@@ -12,7 +15,7 @@ export default function ThinkingHero() {
           transition={{ duration: 0.3 }}
           className="font-body text-xs text-muted uppercase tracking-widest block mb-10"
         >
-          Notes &amp; ideas
+          {t.notesLabel}
         </motion.span>
 
         <motion.h1
@@ -21,7 +24,7 @@ export default function ThinkingHero() {
           transition={{ duration: 0.4, ease: 'easeOut', delay: 0.05 }}
           className="font-heading font-bold text-[clamp(3rem,9vw,8rem)] leading-[1.0] tracking-tight text-ink"
         >
-          How I think<span className="text-accent">.</span>
+          {t.notesTitle}<span className="text-accent">.</span>
         </motion.h1>
 
         <motion.p
@@ -30,7 +33,7 @@ export default function ThinkingHero() {
           transition={{ duration: 0.35, ease: 'easeOut', delay: 0.15 }}
           className="font-body text-xl md:text-2xl text-ink/60 max-w-2xl leading-relaxed mt-10"
         >
-          How I build, what I get wrong, and what I figure out along the way. Not advice. Just notes.
+          {t.notesSub}
         </motion.p>
       </div>
     </section>

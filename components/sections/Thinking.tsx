@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { thinking } from '@/lib/data'
 import Link from 'next/link'
+import { useLanguage } from '@/context/LanguageContext'
 
 function ThinkingRow({
   post, index, isOpen, onToggle,
@@ -138,6 +139,7 @@ function ThinkingRow({
 
 export default function Thinking() {
   const [openId, setOpenId] = useState<string | null>(null)
+  const { t } = useLanguage()
   const preview = thinking.slice(0, 3)
   const toggle  = (id: string) => setOpenId((p) => (p === id ? null : id))
 
@@ -153,10 +155,10 @@ export default function Thinking() {
           className="mb-20"
         >
           <span className="font-body text-xs text-muted uppercase tracking-widest block mb-4">
-            Recent
+            {t.thinkEyebrow}
           </span>
           <h2 className="font-heading text-4xl sm:text-5xl md:text-7xl font-bold text-ink leading-none">
-            Some thoughts<span className="text-accent">.</span>
+            {t.thinkTitle}<span className="text-accent">.</span>
           </h2>
         </motion.div>
 
@@ -177,7 +179,7 @@ export default function Thinking() {
             href="/notes"
             className="inline-flex items-center gap-3 font-body text-sm text-muted hover:text-ink transition-colors duration-200 group cursor-pointer"
           >
-            Read all
+            {t.thinkReadAll}
             <span className="group-hover:translate-x-1 transition-transform duration-200 inline-block">→</span>
           </Link>
         </div>

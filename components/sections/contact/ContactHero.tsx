@@ -1,35 +1,39 @@
 'use client'
 
 import { motion } from 'framer-motion'
-
-const ways = [
-  {
-    label: 'Email',
-    value: 'rohan0105@gmail.com',
-    href: 'mailto:rohan0105@gmail.com',
-    note: 'Best for longer conversations',
-  },
-  {
-    label: 'GitHub',
-    value: 'github.com/ron0105',
-    href: 'https://github.com/ron0105',
-    note: 'See what I build',
-  },
-  {
-    label: 'X',
-    value: '@build_withron',
-    href: 'https://x.com/build_withron',
-    note: 'For quick thoughts and threads',
-  },
-  {
-    label: 'LinkedIn',
-    value: 'linkedin.com/in/ronnnn',
-    href: 'https://www.linkedin.com/in/ronnnn/',
-    note: 'If you prefer it formal',
-  },
-]
+import { useLanguage } from '@/context/LanguageContext'
 
 export default function ContactHero() {
+  const { t } = useLanguage()
+
+  /* Labels and values are handles and addresses; only the notes translate. */
+  const ways = [
+    {
+      label: 'Email',
+      value: 'rohan0105@gmail.com',
+      href: 'mailto:rohan0105@gmail.com',
+      note: t.contactNoteEmail,
+    },
+    {
+      label: 'GitHub',
+      value: 'github.com/ron0105',
+      href: 'https://github.com/ron0105',
+      note: t.contactNoteGithub,
+    },
+    {
+      label: 'X',
+      value: '@build_withron',
+      href: 'https://x.com/build_withron',
+      note: t.contactNoteX,
+    },
+    {
+      label: 'LinkedIn',
+      value: 'linkedin.com/in/ronnnn',
+      href: 'https://www.linkedin.com/in/ronnnn/',
+      note: t.contactNoteLinkedin,
+    },
+  ]
+
   return (
     <section className="flex flex-col px-5 sm:px-6 pt-28 sm:pt-40 pb-16 sm:pb-28 bg-paper">
       <div className="max-w-6xl mx-auto w-full">
@@ -39,7 +43,7 @@ export default function ContactHero() {
           transition={{ duration: 0.3 }}
           className="font-body text-xs text-muted uppercase tracking-widest block mb-10"
         >
-          Say hi
+          {t.contactLabel}
         </motion.span>
 
         <motion.h1
@@ -48,7 +52,7 @@ export default function ContactHero() {
           transition={{ duration: 0.4, ease: 'easeOut', delay: 0.05 }}
           className="font-heading font-bold text-[clamp(3rem,9vw,8rem)] leading-[1.0] tracking-tight text-ink mb-12"
         >
-          Let&apos;s talk<span className="text-accent">.</span>
+          {t.footerCta}<span className="text-accent">.</span>
         </motion.h1>
 
         <motion.p
@@ -57,8 +61,7 @@ export default function ContactHero() {
           transition={{ duration: 0.35, ease: 'easeOut', delay: 0.15 }}
           className="font-body text-lg sm:text-xl md:text-2xl text-ink/60 max-w-2xl leading-relaxed mb-14 sm:mb-24"
         >
-          Whether you have an idea, want to work together, or just want to think
-          out loud. I read everything and reply to most things.
+          {t.contactSub}
         </motion.p>
 
         {/* Contact options */}

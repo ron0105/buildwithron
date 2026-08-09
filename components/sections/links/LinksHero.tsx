@@ -2,53 +2,57 @@
 
 import { motion } from 'framer-motion'
 import Link from 'next/link'
-
-const links = [
-  {
-    label: 'YouTube',
-    handle: 'Learn With Ron',
-    note: 'Live AI experiments, real builds',
-    href: 'https://www.youtube.com/@learn_withron',
-    primary: true,
-  },
-  {
-    label: 'X',
-    handle: '@build_withron',
-    note: 'Quick thoughts, threads, hot takes',
-    href: 'https://x.com/build_withron',
-    primary: false,
-  },
-  {
-    label: 'Instagram',
-    handle: '@build.with.ron',
-    note: 'Life, chaos, the fun stuff',
-    href: 'https://www.instagram.com/build.with.ron/',
-    primary: false,
-  },
-  {
-    label: 'LinkedIn',
-    handle: 'in/ronnnn',
-    note: 'Founder notes, longer writing',
-    href: 'https://www.linkedin.com/in/ronnnn/',
-    primary: false,
-  },
-  {
-    label: 'The Adda Labs',
-    handle: 'My studio',
-    note: 'Consulting — strategy, automation, storytelling',
-    href: '/work',
-    primary: false,
-  },
-  {
-    label: 'Email',
-    handle: 'rohan0105@gmail.com',
-    note: 'For longer conversations',
-    href: 'mailto:rohan0105@gmail.com',
-    primary: false,
-  },
-]
+import { useLanguage } from '@/context/LanguageContext'
 
 export default function LinksHero() {
+  const { t } = useLanguage()
+
+  /* Labels and handles are proper nouns and account names; notes translate. */
+  const links = [
+    {
+      label: 'YouTube',
+      handle: 'Learn With Ron',
+      note: t.linkNoteYoutube,
+      href: 'https://www.youtube.com/@learn_withron',
+      primary: true,
+    },
+    {
+      label: 'X',
+      handle: '@build_withron',
+      note: t.linkNoteX,
+      href: 'https://x.com/build_withron',
+      primary: false,
+    },
+    {
+      label: 'Instagram',
+      handle: '@build.with.ron',
+      note: t.linkNoteInstagram,
+      href: 'https://www.instagram.com/build.with.ron/',
+      primary: false,
+    },
+    {
+      label: 'LinkedIn',
+      handle: 'in/ronnnn',
+      note: t.linkNoteLinkedin,
+      href: 'https://www.linkedin.com/in/ronnnn/',
+      primary: false,
+    },
+    {
+      label: 'The Adda Labs',
+      handle: t.linkHandleStudio,
+      note: t.linkNoteStudio,
+      href: '/work',
+      primary: false,
+    },
+    {
+      label: 'Email',
+      handle: 'rohan0105@gmail.com',
+      note: t.linkNoteEmail,
+      href: 'mailto:rohan0105@gmail.com',
+      primary: false,
+    },
+  ]
+
   return (
     <section className="min-h-screen flex flex-col px-5 sm:px-6 pt-28 sm:pt-36 pb-16 bg-paper">
       <div className="max-w-xl mx-auto w-full">
@@ -63,7 +67,7 @@ export default function LinksHero() {
             Rohan Tiwarekar<span className="text-accent">.</span>
           </h1>
           <p className="font-body text-base text-muted mt-4 leading-relaxed">
-            Founder · Builder · Cat dad · Mumbai. Building a company and filming the journey.
+            {t.linksBio}
           </p>
         </motion.div>
 

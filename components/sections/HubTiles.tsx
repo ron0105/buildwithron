@@ -2,35 +2,39 @@
 
 import { motion } from 'framer-motion'
 import Link from 'next/link'
-
-const tiles = [
-  {
-    id: '01',
-    label: 'Company',
-    title: 'The Adda Labs',
-    descriptor: 'Where I test ideas before they become real products.',
-    href: '/work',
-    external: false,
-  },
-  {
-    id: '02',
-    label: 'YouTube',
-    title: 'Learn With Ron',
-    descriptor: 'I use AI live on camera. Watch what actually happens.',
-    href: '/learn',
-    external: false,
-  },
-  {
-    id: '03',
-    label: 'Life',
-    title: 'Life',
-    descriptor: 'The stuff that happens outside the work.',
-    href: 'https://www.instagram.com/build.with.ron/',
-    external: true,
-  },
-]
+import { useLanguage } from '@/context/LanguageContext'
 
 export default function HubTiles() {
+  const { t } = useLanguage()
+
+  /* Titles 01 and 02 are proper nouns and stay in Latin script everywhere. */
+  const tiles = [
+    {
+      id: '01',
+      label: t.hub1Label,
+      title: 'The Adda Labs',
+      descriptor: t.hub1Desc,
+      href: '/work',
+      external: false,
+    },
+    {
+      id: '02',
+      label: t.hub2Label,
+      title: 'Learn With Ron',
+      descriptor: t.hub2Desc,
+      href: '/learn',
+      external: false,
+    },
+    {
+      id: '03',
+      label: t.hub3Label,
+      title: t.hub3Title,
+      descriptor: t.hub3Desc,
+      href: 'https://www.instagram.com/build.with.ron/',
+      external: true,
+    },
+  ]
+
   return (
     <section className="bg-paper border-t border-border">
       <div className="max-w-6xl mx-auto px-5 sm:px-6 pt-10 sm:pt-14 pb-2 sm:pb-4">
@@ -41,7 +45,7 @@ export default function HubTiles() {
           transition={{ duration: 0.3 }}
           className="font-body text-xs text-muted/50 uppercase tracking-[0.2em]"
         >
-          Everything I&apos;m building
+          {t.hubLabel}
         </motion.span>
       </div>
 
@@ -81,7 +85,7 @@ export default function HubTiles() {
                     {tile.descriptor}
                   </p>
                   <span className="font-body text-sm text-muted/50 group-hover:text-accent transition-colors duration-300 flex items-center gap-2">
-                    Explore
+                    {t.hubExplore}
                     <span className="group-hover:translate-x-1 transition-transform duration-200 inline-block">→</span>
                   </span>
                 </div>
