@@ -70,6 +70,26 @@ body::after {
 }
 
 
+/* Page transition.
+
+   This is a CSS animation rather than a framer-motion one on purpose. The
+   wrapper sits in the root layout, so it governs the first paint of every page
+   on the site. As a motion.div mounting at opacity:0, nothing was visible until
+   React had downloaded, parsed and hydrated: measured first contentful paint on
+   /links was 1640ms against a 9ms TTFB, on a warm cache. The markup had been
+   sitting there the whole time, deliberately hidden.
+
+   Running it in CSS means the fade starts when the browser paints, with no
+   dependency on JS. The reduced-motion block below already collapses it. */
+@keyframes page-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.page-fade-in {
+  animation: page-fade-in 0.2s ease-out both;
+}
+
 /* Respect reduced motion */
 @media (prefers-reduced-motion: reduce) {
   *,
