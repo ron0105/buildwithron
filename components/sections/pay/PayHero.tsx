@@ -6,8 +6,9 @@ import CopyField from '@/components/ui/CopyField'
 
 interface Props {
   vpa: string
-  upiUri: string
+  primaryUri: string
   qrSvg: string
+  /* The entry labelled 'any' is the generic upi: intent and takes translated copy. */
   apps: { label: string; href: string }[]
 }
 
@@ -16,7 +17,7 @@ interface Props {
   costs the reader a beat while React hydrates. This page gets opened by someone
   standing in front of Rohan waiting to pay him, so it paints and it is done.
 */
-export default function PayHero({ vpa, upiUri, qrSvg, apps }: Props) {
+export default function PayHero({ vpa, primaryUri, qrSvg, apps }: Props) {
   const { t } = useLanguage()
 
   return (
@@ -31,12 +32,14 @@ export default function PayHero({ vpa, upiUri, qrSvg, apps }: Props) {
         </p>
 
         {/*
-          The primary action. `upi:` is an app-intent scheme, so it opens the
-          payment sheet on a phone that has any UPI app and does nothing at all
-          on a desktop, which is why the ID and the QR sit right underneath.
+          Named scheme, not the generic upi: intent. The generic one is supposed
+          to raise Android's app chooser, but a phone with a default UPI handler
+          jumps straight there — WhatsApp, in the case that surfaced this. Naming
+          the app is the only way to know which one opens. Every alternative,
+          including the generic intent, sits in the row below.
         */}
         <a
-          href={upiUri}
+          href={primaryUri}
           className="mt-10 flex items-center justify-center gap-3 rounded-lg bg-accent px-6 py-5 font-heading font-semibold text-lg text-white hover:opacity-90 transition-opacity duration-200"
         >
           {t.payOpenApp}
@@ -44,10 +47,10 @@ export default function PayHero({ vpa, upiUri, qrSvg, apps }: Props) {
         </a>
 
         {/*
-          Named apps, for iPhone. The generic upi: intent above is an Android
-          mechanism; on iOS it frequently resolves to nothing, and a dead
-          primary button with no visible alternative is the worst outcome on a
-          page someone opened specifically to hand over money.
+          The alternatives, including the generic upi: intent as the last entry.
+          Named schemes also cover iPhone, where upi: often resolves to nothing
+          at all — a dead button with no visible alternative is the worst
+          outcome on a page someone opened to hand over money.
         */}
         <p className="font-body text-sm text-muted text-center mt-8 mb-3">
           {t.payPickApp}
@@ -59,7 +62,7 @@ export default function PayHero({ vpa, upiUri, qrSvg, apps }: Props) {
               href={app.href}
               className="rounded-lg border border-border px-1 py-3 text-center font-body text-[13px] whitespace-nowrap text-muted hover:border-ink hover:text-ink transition-colors duration-200"
             >
-              {app.label}
+              {app.label === 'any' ? t.payAnyUpi : app.label}
             </a>
           ))}
         </div>

@@ -13,7 +13,28 @@ export default async function PayPage() {
   /* Runs once at build. The QR ships inside the HTML as markup. */
   const qrSvg = await upiQrSvg()
 
-  const apps = payApps.map((a) => ({ label: a.label, href: appUri(a.scheme) }))
+  /*
+    Google Pay is promoted to the primary button and the generic upi: intent is
+    demoted to one option among the rest.
 
-  return <PayHero vpa={pay.vpa} upiUri={upiUri()} qrSvg={qrSvg} apps={apps} />
+    The generic intent is meant to raise Android's app chooser, but if the phone
+    has a default UPI handler set it goes straight there with no prompt. On
+    Rohan's phone that is WhatsApp, which does have UPI payments, so the link
+    was working exactly as specified and still landing somewhere he did not
+    want. A named scheme is the only way to be sure which app opens.
+  */
+  const [primary, ...rest] = payApps
+  const apps = [
+    ...rest.map((a) => ({ label: a.label, href: appUri(a.scheme) })),
+    { label: 'any', href: upiUri() },
+  ]
+
+  return (
+    <PayHero
+      vpa={pay.vpa}
+      primaryUri={appUri(primary.scheme)}
+      qrSvg={qrSvg}
+      apps={apps}
+    />
+  )
 }
