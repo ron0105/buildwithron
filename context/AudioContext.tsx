@@ -39,9 +39,17 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
   return (
     <AudioContext.Provider value={{ isPlaying, toggleAudio }}>
       {children}
+      {/*
+        preload="none": this element is mounted globally in the root layout,
+        so without it every page — including /links and /pay, both hand-tuned
+        to paint instantly with zero extra requests — eagerly fetched this
+        file on load despite having no audio UI at all. Browsers honor
+        preload="none" and wait for .play() before requesting anything.
+      */}
       <audio
         ref={audioRef}
         src="/audio/rap.mp3"
+        preload="none"
         onEnded={() => setIsPlaying(false)}
         className="hidden"
       />

@@ -8,6 +8,10 @@
   --color-accent: #FF4D00;
   --color-muted: #6B6B6B;
   --color-border: #E3E2DF;
+  /* Learn With Ron channel purple, sampled from the actual avatar mark, not
+     the site's orange. Fixed hex in both themes like --color-accent, so the
+     YouTube tile stays this color and cannot drift into brand orange. */
+  --color-youtube: #7528E3;
 
   /* Fonts. Devanagari sits after Inter so Hindi and Marathi glyphs fall
      through to Noto per character, while Latin stays Inter. */

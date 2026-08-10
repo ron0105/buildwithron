@@ -16,21 +16,34 @@ import { useLanguage } from '@/context/LanguageContext'
 export default function LinksHero() {
   const { t } = useLanguage()
 
+  /*
+    Pay is the primary tile, YouTube secondary. This page is what a scanned
+    wallet card opens — someone reading it is standing in front of Rohan
+    mid-conversation, far more likely to need to pay him right then than to
+    want a YouTube link. Was the reverse; flipped on Rohan's call.
+  */
   /* Labels and handles are proper nouns and account names; notes translate. */
   const links = [
-    {
-      label: 'YouTube',
-      handle: 'Learn With Ron',
-      note: t.linkNoteYoutube,
-      href: 'https://www.youtube.com/@learn_withron',
-      variant: 'primary' as const,
-    },
     {
       label: 'Pay',
       handle: t.linkHandlePay,
       note: t.linkNotePay,
       href: '/pay',
+      variant: 'primary' as const,
+    },
+    {
+      label: 'YouTube',
+      handle: 'Learn With Ron',
+      note: t.linkNoteYoutube,
+      href: 'https://www.youtube.com/@learn_withron',
       variant: 'marked' as const,
+    },
+    {
+      label: t.linkLabelContact,
+      handle: '',
+      note: t.linkNoteContact,
+      href: '/rohan.vcf',
+      variant: 'plain' as const,
     },
     {
       label: 'X',
@@ -79,7 +92,10 @@ export default function LinksHero() {
   */
   const shell = {
     primary: 'bg-accent border-accent',
-    marked: 'bg-paper border-accent/45 hover:border-accent',
+    /* YouTube's own tile. Purple is the channel's actual brand color (the
+       avatar mark), not the site's orange accent, so it gets its own token
+       rather than borrowing --color-accent. */
+    marked: 'bg-paper border-youtube/45 hover:border-youtube',
     plain: 'bg-paper border-border hover:border-ink',
   }
 
@@ -100,7 +116,8 @@ export default function LinksHero() {
         <ul className="flex flex-col gap-3">
           {links.map((link) => {
             const isPrimary = link.variant === 'primary'
-            const isExternal = link.href.startsWith('http') || link.href.startsWith('mailto')
+            const isExternal =
+              link.href.startsWith('http') || link.href.startsWith('mailto') || link.href.endsWith('.vcf')
             const inner = (
               <div
                 className={`group flex items-center justify-between gap-4 border rounded-lg px-6 py-5 transition-colors duration-200 cursor-pointer ${shell[link.variant]}`}
@@ -112,13 +129,15 @@ export default function LinksHero() {
                     }`}
                   >
                     {link.label}
-                    <span
-                      className={`font-body font-normal text-sm ml-3 ${
-                        isPrimary ? 'text-white/70' : 'text-muted'
-                      }`}
-                    >
-                      {link.handle}
-                    </span>
+                    {link.handle && (
+                      <span
+                        className={`font-body font-normal text-sm ml-3 ${
+                          isPrimary ? 'text-white/70' : 'text-muted'
+                        }`}
+                      >
+                        {link.handle}
+                      </span>
+                    )}
                   </span>
                   <span
                     className={`font-body text-sm block mt-1 ${
