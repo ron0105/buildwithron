@@ -12,6 +12,11 @@
      the site's orange. Fixed hex in both themes like --color-accent, so the
      YouTube tile stays this color and cannot drift into brand orange. */
   --color-youtube: #7528E3;
+  /* Same green as .card-palette's --color-accent below (the wallet card /
+     /pay page). Reusing the exact hex, not a new green, so the Pay tile on
+     /links and the "Open Google Pay" button it leads to read as one object
+     instead of two different greens that happen to be close. */
+  --color-pay: #508870;
 
   /* Fonts. Devanagari sits after Inter so Hindi and Marathi glyphs fall
      through to Noto per character, while Latin stays Inter. */

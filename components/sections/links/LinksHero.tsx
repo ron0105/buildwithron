@@ -87,11 +87,14 @@ export default function LinksHero() {
     `.always-dark` resets --color-ink back to its light-theme value, so the tile
     painted #0D0D0D on a #111111 page: a 1.03:1 contrast ratio, invisible, and
     with no border either since border-ink matched its own fill. The one tile
-    meant to stand out was the only one you could not see. Accent is a fixed
-    hex in both themes, so it cannot drift the same way.
+    meant to stand out was the only one you could not see. A fixed hex, not a
+    themed one, is what keeps a tile from drifting like that.
   */
   const shell = {
-    primary: 'bg-accent border-accent',
+    /* Same green as the /pay page's "Open Google Pay" button (--color-pay,
+       .card-palette's --color-accent) — soothing on a page about money, and
+       it makes the tile and the page it opens read as one object. */
+    primary: 'bg-pay border-pay',
     /* YouTube's own tile. Purple is the channel's actual brand color (the
        avatar mark), not the site's orange accent, so it gets its own token
        rather than borrowing --color-accent. */
