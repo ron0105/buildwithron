@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import { track } from '@vercel/analytics'
 import { useLanguage } from '@/context/LanguageContext'
 
 /*
@@ -16,21 +17,8 @@ import { useLanguage } from '@/context/LanguageContext'
 export default function LinksHero() {
   const { t } = useLanguage()
 
-  /*
-    Pay is the primary tile, YouTube secondary. This page is what a scanned
-    wallet card opens — someone reading it is standing in front of Rohan
-    mid-conversation, far more likely to need to pay him right then than to
-    want a YouTube link. Was the reverse; flipped on Rohan's call.
-  */
   /* Labels and handles are proper nouns and account names; notes translate. */
   const links = [
-    {
-      label: 'Pay',
-      handle: t.linkHandlePay,
-      note: t.linkNotePay,
-      href: '/pay',
-      variant: 'primary' as const,
-    },
     {
       label: 'YouTube',
       handle: 'Learn With Ron',
@@ -82,19 +70,7 @@ export default function LinksHero() {
     },
   ]
 
-  /*
-    The primary tile used to be `bg-ink border-ink always-dark`. In dark mode
-    `.always-dark` resets --color-ink back to its light-theme value, so the tile
-    painted #0D0D0D on a #111111 page: a 1.03:1 contrast ratio, invisible, and
-    with no border either since border-ink matched its own fill. The one tile
-    meant to stand out was the only one you could not see. A fixed hex, not a
-    themed one, is what keeps a tile from drifting like that.
-  */
   const shell = {
-    /* Same green as the /pay page's "Open Google Pay" button (--color-pay,
-       .card-palette's --color-accent) — soothing on a page about money, and
-       it makes the tile and the page it opens read as one object. */
-    primary: 'bg-pay border-pay',
     /* YouTube's own tile. Purple is the channel's actual brand color (the
        avatar mark), not the site's orange accent, so it gets its own token
        rather than borrowing --color-accent. */
@@ -113,12 +89,23 @@ export default function LinksHero() {
           <p className="font-body text-base text-muted mt-4 leading-relaxed">
             {t.linksBio}
           </p>
+          {/* Compact secondary CTA, not a full tile — this used to be the
+              primary tile up top, demoted on Rohan's call so the page reads
+              as "about me + where to find me" first, payment second. */}
+          <a
+            href="/pay"
+            onClick={() => track('link_click', { label: 'Pay' })}
+            aria-label={t.linkNotePay}
+            className="inline-flex items-center gap-1.5 rounded-full border border-pay text-pay font-heading font-semibold text-sm px-5 py-2 mt-6 hover:bg-pay hover:text-white transition-colors duration-200"
+          >
+            {t.linkHandlePay}
+            <span>→</span>
+          </a>
         </div>
 
         {/* Links */}
         <ul className="flex flex-col gap-3">
           {links.map((link) => {
-            const isPrimary = link.variant === 'primary'
             const isExternal =
               link.href.startsWith('http') || link.href.startsWith('mailto') || link.href.endsWith('.vcf')
             const inner = (
@@ -126,48 +113,36 @@ export default function LinksHero() {
                 className={`group flex items-center justify-between gap-4 border rounded-lg px-6 py-5 transition-colors duration-200 cursor-pointer ${shell[link.variant]}`}
               >
                 <div>
-                  <span
-                    className={`font-heading font-semibold text-lg block ${
-                      isPrimary ? 'text-white' : 'text-ink'
-                    }`}
-                  >
+                  <span className="font-heading font-semibold text-lg block text-ink">
                     {link.label}
                     {link.handle && (
-                      <span
-                        className={`font-body font-normal text-sm ml-3 ${
-                          isPrimary ? 'text-white/70' : 'text-muted'
-                        }`}
-                      >
+                      <span className="font-body font-normal text-sm ml-3 text-muted">
                         {link.handle}
                       </span>
                     )}
                   </span>
-                  <span
-                    className={`font-body text-sm block mt-1 ${
-                      isPrimary ? 'text-white/70' : 'text-muted/80'
-                    }`}
-                  >
+                  <span className="font-body text-sm block mt-1 text-muted/80">
                     {link.note}
                   </span>
                 </div>
-                <span
-                  className={`shrink-0 transition-transform duration-200 group-hover:translate-x-1 ${
-                    isPrimary ? 'text-white/80' : 'text-muted'
-                  }`}
-                >
+                <span className="shrink-0 transition-transform duration-200 group-hover:translate-x-1 text-muted">
                   →
                 </span>
               </div>
             )
 
+            const onClick = () => track('link_click', { label: link.label })
+
             return (
               <li key={link.label}>
                 {isExternal ? (
-                  <a href={link.href} target="_blank" rel="noopener noreferrer">
+                  <a href={link.href} target="_blank" rel="noopener noreferrer" onClick={onClick}>
                     {inner}
                   </a>
                 ) : (
-                  <Link href={link.href}>{inner}</Link>
+                  <Link href={link.href} onClick={onClick}>
+                    {inner}
+                  </Link>
                 )}
               </li>
             )
