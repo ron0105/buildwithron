@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef, useEffect, useCallback } from 'react'
+import { useRef, useEffect, useLayoutEffect, useCallback } from 'react'
 import {
   motion,
   useMotionValue,
@@ -13,6 +13,7 @@ import {
 import Link from 'next/link'
 import Image from 'next/image'
 import dynamic from 'next/dynamic'
+import { Plus_Jakarta_Sans } from 'next/font/google'
 import { useState } from 'react'
 import AudioTrigger from '@/components/ui/AudioTrigger'
 import { useTheme } from '@/context/ThemeContext'
@@ -20,6 +21,16 @@ import { useLanguage } from '@/context/LanguageContext'
 
 const ShaderCanvas = dynamic(() => import('@/components/ui/ShaderCanvas'), {
   ssr: false,
+})
+
+/* Hero-only cinematic type system. Scoped here via CSS var override on the
+   section root (see heroFontVars below) rather than globals.css, so the rest
+   of the site keeps Inter + the Devanagari fallback chain untouched. */
+const jakarta = Plus_Jakarta_Sans({
+  subsets: ['latin'],
+  weight: ['500', '600', '700', '800'],
+  variable: '--font-jakarta',
+  display: 'swap',
 })
 
 interface Ripple {
@@ -34,7 +45,17 @@ export default function Hero() {
   const rippleId = useRef(0)
   const { theme } = useTheme()
   const { t } = useLanguage()
-  const paperColor = theme === 'dark' ? '#111111' : '#F7F6F3'
+  /* Cinematic dark tone for this section only. Deliberately not #0B1410 —
+     that exact hex is already reserved on .card-palette (/pay) to match a
+     physical wallet card's fixed ink, unrelated to this redesign. */
+  const paperColor = theme === 'dark' ? '#0D1512' : '#F7F6F3'
+  /* Same Latin→Devanagari fallback chain as the global tokens (globals.css),
+     just pointed at Jakarta instead of Inter for Latin glyphs — Hindi/Marathi
+     hero copy still needs to fall through to Noto Devanagari. */
+  const heroFontVars = {
+    '--font-heading': 'var(--font-jakarta), var(--font-devanagari), sans-serif',
+    '--font-body': 'var(--font-jakarta), var(--font-devanagari), sans-serif',
+  } as React.CSSProperties
 
   /* Boolean state drives letter-spacing spring on heading */
   const [isFocused, setIsFocused] = useState(false)
@@ -62,6 +83,28 @@ export default function Hero() {
     shaderFocusRef.current = scrollFocusRef.current
     hoverGrid.set(0)
   }, [hoverGrid])
+
+  /* ── Hero visual: video scrub on fine pointer, static image fallback otherwise ── */
+  const videoRef = useRef<HTMLVideoElement>(null)
+  const targetTimeRef = useRef(0)
+  const currentTimeRef = useRef(0)
+  const durationRef = useRef(0)
+  const videoRafRef = useRef<number | null>(null)
+  const [useVideoHero, setUseVideoHero] = useState(false)
+
+  useLayoutEffect(() => {
+    const finePointer = window.matchMedia('(pointer: fine)').matches
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    setUseVideoHero(finePointer && !reducedMotion)
+  }, [])
+
+  const handleVideoLoadedMetadata = useCallback(() => {
+    const video = videoRef.current
+    if (video) {
+      durationRef.current = video.duration
+      video.pause()
+    }
+  }, [])
 
   /* ── Face + heading parallax ── */
   const rawPX = useMotionValue(0)
@@ -142,6 +185,11 @@ export default function Hero() {
       const cy = window.innerHeight / 2
       rawPX.set(((e.clientX - cx) / cx) * 14)
       rawPY.set(((e.clientY - cy) / cy) * 10)
+
+      if (durationRef.current > 0) {
+        const xRatio = Math.min(Math.max(e.clientX / window.innerWidth, 0), 1)
+        targetTimeRef.current = xRatio * durationRef.current
+      }
     }
     const onLeave = () => {
       rawPX.set(0)
@@ -156,6 +204,25 @@ export default function Hero() {
     }
   }, [rawPX, rawPY])
 
+  /* ── Video scrub loop: lerp currentTime toward cursor-driven target ── */
+  useEffect(() => {
+    if (!useVideoHero) return
+
+    const animate = () => {
+      const video = videoRef.current
+      if (video && durationRef.current > 0) {
+        currentTimeRef.current += (targetTimeRef.current - currentTimeRef.current) * 0.09
+        video.currentTime = currentTimeRef.current
+      }
+      videoRafRef.current = requestAnimationFrame(animate)
+    }
+    videoRafRef.current = requestAnimationFrame(animate)
+
+    return () => {
+      if (videoRafRef.current !== null) cancelAnimationFrame(videoRafRef.current)
+    }
+  }, [useVideoHero])
+
   /* ── Click ripple ── */
   const handleClick = useCallback((e: React.MouseEvent) => {
     const id = rippleId.current++
@@ -167,7 +234,8 @@ export default function Hero() {
     <section
       ref={heroRef}
       onClick={handleClick}
-      className="relative overflow-hidden min-h-screen flex flex-col bg-paper"
+      className={`relative overflow-hidden min-h-screen flex flex-col bg-paper ${jakarta.variable}`}
+      style={heroFontVars}
     >
 
       {/* ── 1: Shader : organic flowing background ── */}
@@ -180,7 +248,7 @@ export default function Hero() {
         <div
           className="absolute inset-0 pointer-events-none z-[1]"
           style={{
-            background: 'linear-gradient(to right, rgba(17,17,17,0.82) 0%, rgba(17,17,17,0.65) 38%, rgba(17,17,17,0.2) 62%, transparent 75%)',
+            background: 'linear-gradient(to right, rgba(13,21,18,0.82) 0%, rgba(13,21,18,0.65) 38%, rgba(13,21,18,0.2) 62%, transparent 75%)',
           }}
         />
       )}
@@ -232,18 +300,36 @@ export default function Hero() {
             }}
             transition={{ duration: 0.65, ease: [0.25, 0.1, 0.25, 1] }}
           >
-            <Image
-              src="/roro.png"
-              alt=""
-              fill
-              sizes="(max-width: 768px) 0px, 52vw"
-              className="object-cover"
-              style={{
-                objectPosition: '50% 12%',
-                filter: 'contrast(1.08) brightness(0.95)',
-              }}
-              priority
-            />
+            {useVideoHero ? (
+              <video
+                ref={videoRef}
+                muted
+                playsInline
+                preload="auto"
+                poster="/roro.png"
+                onLoadedMetadata={handleVideoLoadedMetadata}
+                className="absolute inset-0 w-full h-full object-cover"
+                style={{
+                  objectPosition: '50% 12%',
+                  filter: 'contrast(1.08) brightness(0.95)',
+                }}
+              >
+                <source src="/ron-turn.mp4" type="video/mp4" />
+              </video>
+            ) : (
+              <Image
+                src="/roro.png"
+                alt=""
+                fill
+                sizes="(max-width: 768px) 0px, 52vw"
+                className="object-cover"
+                style={{
+                  objectPosition: '50% 12%',
+                  filter: 'contrast(1.08) brightness(0.95)',
+                }}
+                priority
+              />
+            )}
           </motion.div>
         </motion.div>
       </motion.div>
@@ -270,7 +356,7 @@ export default function Hero() {
           className="absolute inset-0"
           style={{
             background: theme === 'dark'
-              ? `linear-gradient(to bottom, transparent 0%, transparent 42%, rgba(17,17,17,0.2) 52%, rgba(17,17,17,0.7) 62%, rgba(17,17,17,0.95) 70%, #111111 76%)`
+              ? `linear-gradient(to bottom, transparent 0%, transparent 42%, rgba(13,21,18,0.2) 52%, rgba(13,21,18,0.7) 62%, rgba(13,21,18,0.95) 70%, #0D1512 76%)`
               : `linear-gradient(to bottom, transparent 0%, transparent 42%, rgba(247,246,243,0.2) 52%, rgba(247,246,243,0.7) 62%, rgba(247,246,243,0.95) 70%, #F7F6F3 76%)`,
           }}
         />
@@ -381,13 +467,13 @@ export default function Hero() {
             >
               <Link
                 href="/work"
-                className="inline-flex items-center gap-2 bg-ink text-paper font-body text-sm font-medium px-6 py-3.5 sm:px-7 sm:py-4 hover:bg-accent transition-colors duration-200"
+                className="inline-flex items-center gap-2 rounded-full bg-ink text-paper font-body text-sm font-medium px-6 py-3.5 sm:px-7 sm:py-4 hover:bg-accent transition-colors duration-200"
               >
                 {t.heroCta1} →
               </Link>
               <Link
                 href="/about"
-                className="font-body text-sm text-muted hover:text-ink transition-colors duration-200"
+                className="inline-flex items-center rounded-full border border-ink/15 bg-ink/5 backdrop-blur-sm font-body text-sm font-medium text-ink px-6 py-3.5 sm:px-7 sm:py-4 hover:bg-ink/10 transition-colors duration-200"
               >
                 {t.heroCta2}
               </Link>
