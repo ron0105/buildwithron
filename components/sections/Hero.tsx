@@ -16,6 +16,7 @@ import dynamic from 'next/dynamic'
 import { Plus_Jakarta_Sans } from 'next/font/google'
 import { useState } from 'react'
 import AudioTrigger from '@/components/ui/AudioTrigger'
+import Magnetic from '@/components/ui/Magnetic'
 import { useTheme } from '@/context/ThemeContext'
 import { useLanguage } from '@/context/LanguageContext'
 
@@ -465,18 +466,22 @@ export default function Hero() {
               onMouseEnter={handleHoverStart}
               onMouseLeave={handleHoverEnd}
             >
-              <Link
-                href="/work"
-                className="inline-flex items-center gap-2 rounded-full bg-ink text-paper font-body text-sm font-medium px-6 py-3.5 sm:px-7 sm:py-4 hover:bg-accent transition-colors duration-200"
-              >
-                {t.heroCta1} →
-              </Link>
-              <Link
-                href="/about"
-                className="inline-flex items-center rounded-full border border-ink/15 bg-ink/5 backdrop-blur-sm font-body text-sm font-medium text-ink px-6 py-3.5 sm:px-7 sm:py-4 hover:bg-ink/10 transition-colors duration-200"
-              >
-                {t.heroCta2}
-              </Link>
+              <Magnetic strength={0.35}>
+                <Link
+                  href="/work"
+                  className="inline-flex items-center gap-2 rounded-full bg-ink text-paper font-body text-sm font-medium px-6 py-3.5 sm:px-7 sm:py-4 hover:bg-accent transition-colors duration-200"
+                >
+                  {t.heroCta1} →
+                </Link>
+              </Magnetic>
+              <Magnetic strength={0.35}>
+                <Link
+                  href="/about"
+                  className="inline-flex items-center rounded-full border border-ink/15 bg-ink/5 backdrop-blur-sm font-body text-sm font-medium text-ink px-6 py-3.5 sm:px-7 sm:py-4 hover:bg-ink/10 transition-colors duration-200"
+                >
+                  {t.heroCta2}
+                </Link>
+              </Magnetic>
               <span
                 aria-hidden="true"
                 className="hidden sm:inline-block text-muted/70 text-xl"

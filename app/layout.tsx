@@ -3,6 +3,7 @@ import { Inter, Caveat, Noto_Sans_Devanagari } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/react'
 import './globals.css'
 import PageTransition from '@/components/ui/PageTransition'
+import CustomCursor from '@/components/ui/CustomCursor'
 import { AudioProvider } from '@/context/AudioContext'
 import { ThemeProvider } from '@/context/ThemeContext'
 import { LanguageProvider } from '@/context/LanguageContext'
@@ -84,6 +85,7 @@ export default function RootLayout({
             </AudioProvider>
           </LanguageProvider>
         </ThemeProvider>
+        <CustomCursor />
         <Analytics />
       </body>
     </html>

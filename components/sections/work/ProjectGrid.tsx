@@ -1,7 +1,7 @@
 'use client'
 
-import { motion, AnimatePresence } from 'framer-motion'
-import { useState } from 'react'
+import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from 'framer-motion'
+import { useState, useCallback } from 'react'
 import { experiments } from '@/lib/data'
 import { useLanguage } from '@/context/LanguageContext'
 import type { Dict } from '@/lib/i18n'
@@ -44,17 +44,41 @@ function ProjectCard({
   const status = statusConfig[project.status]
   const copy = t.projects[project.id]
 
+  /* Subtle tilt toward cursor : small coefficients, only while collapsed
+     feels right — an expanded card is for reading, not play. */
+  const tiltX = useMotionValue(0)
+  const tiltY = useMotionValue(0)
+  const springX = useSpring(tiltX, { damping: 20, stiffness: 200 })
+  const springY = useSpring(tiltY, { damping: 20, stiffness: 200 })
+  const rotateX = useTransform(springY, [-0.5, 0.5], [4, -4])
+  const rotateY = useTransform(springX, [-0.5, 0.5], [-4, 4])
+
+  const handleTiltMove = useCallback((e: React.MouseEvent) => {
+    const rect = e.currentTarget.getBoundingClientRect()
+    tiltX.set((e.clientX - rect.left) / rect.width - 0.5)
+    tiltY.set((e.clientY - rect.top) / rect.height - 0.5)
+  }, [tiltX, tiltY])
+
+  const resetTilt = useCallback(() => {
+    tiltX.set(0)
+    tiltY.set(0)
+  }, [tiltX, tiltY])
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 16 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-40px' }}
       transition={{ duration: 0.3, delay: index * 0.05, ease: 'easeOut' }}
+      onMouseMove={handleTiltMove}
+      onMouseLeave={resetTilt}
+      style={{ rotateX, rotateY, transformPerspective: 800 }}
       className={`border border-border transition-colors duration-200 ${open ? 'border-ink/20' : 'hover:border-ink/20'}`}
     >
       {/* Card header : always visible, always clickable */}
       <button
         onClick={() => setOpen((v) => !v)}
+        data-cursor-label={t.projView}
         className="w-full text-left p-7 md:p-8 cursor-pointer group"
         aria-expanded={open}
       >

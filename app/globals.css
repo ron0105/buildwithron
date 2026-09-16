@@ -131,6 +131,14 @@ body:has(.card-palette) {
   animation: page-fade-in 0.2s ease-out both;
 }
 
+/* Custom cursor: only engaged once CustomCursor.tsx confirms a fine
+   pointer + no reduced-motion preference, so touch/reduced-motion visitors
+   keep their native cursor untouched. */
+.custom-cursor-active,
+.custom-cursor-active * {
+  cursor: none !important;
+}
+
 /* Respect reduced motion */
 @media (prefers-reduced-motion: reduce) {
   *,

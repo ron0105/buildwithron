@@ -8,6 +8,7 @@ import { usePathname } from 'next/navigation'
 import { useTheme } from '@/context/ThemeContext'
 import { useLanguage } from '@/context/LanguageContext'
 import LanguageSwitcher from '@/components/ui/LanguageSwitcher'
+import Magnetic from '@/components/ui/Magnetic'
 
 export default function Nav() {
   const [scrolled, setScrolled] = useState(false)
@@ -114,12 +115,14 @@ export default function Nav() {
                 </svg>
               )}
             </button>
-            <Link
-              href="/contact"
-              className="bg-ink text-paper text-[10px] uppercase font-bold tracking-widest px-6 py-2.5 rounded-full hover:bg-accent transition-colors duration-300"
-            >
-              {t.navTalk}
-            </Link>
+            <Magnetic strength={0.4}>
+              <Link
+                href="/contact"
+                className="bg-ink text-paper text-[10px] uppercase font-bold tracking-widest px-6 py-2.5 rounded-full hover:bg-accent transition-colors duration-300"
+              >
+                {t.navTalk}
+              </Link>
+            </Magnetic>
           </div>
 
           {/* Mobile: audio icon + menu — always visible on every page */}
