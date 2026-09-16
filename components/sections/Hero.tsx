@@ -34,6 +34,11 @@ const jakarta = Plus_Jakarta_Sans({
   display: 'swap',
 })
 
+/* Off until a filmed clip actually matches roro.png (same background/outfit).
+   The scrub mechanism below stays intact — flip this back on once that
+   clip exists rather than rebuilding it. */
+const HERO_VIDEO_ENABLED = false
+
 interface Ripple {
   id: number
   x: number
@@ -301,7 +306,7 @@ export default function Hero() {
             }}
             transition={{ duration: 0.65, ease: [0.25, 0.1, 0.25, 1] }}
           >
-            {useVideoHero ? (
+            {HERO_VIDEO_ENABLED && useVideoHero ? (
               <video
                 ref={videoRef}
                 muted
