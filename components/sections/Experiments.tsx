@@ -63,6 +63,7 @@ function ProjectCard({
                 src={project.image as string}
                 alt={project.title}
                 fill
+                sizes="(max-width: 768px) 100vw, 50vw"
                 className="object-cover grayscale hover:grayscale-0 transition-all duration-700"
               />
             )}

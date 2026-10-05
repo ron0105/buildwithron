@@ -70,7 +70,7 @@ export default function HeroScene({ heroRef }: Props) {
           }}
         >
           <Image
-            src="/ron-portrait.png"
+            src="/ron-portrait.webp"
             alt=""
             fill
             sizes="(max-width: 768px) 0px, 460px"

@@ -312,7 +312,7 @@ export default function Hero() {
                 muted
                 playsInline
                 preload="auto"
-                poster="/roro.png"
+                poster="/roro.webp"
                 onLoadedMetadata={handleVideoLoadedMetadata}
                 className="absolute inset-0 w-full h-full object-cover"
                 style={{
@@ -324,7 +324,7 @@ export default function Hero() {
               </video>
             ) : (
               <Image
-                src="/roro.png"
+                src="/roro.webp"
                 alt=""
                 fill
                 sizes="(max-width: 768px) 0px, 52vw"
@@ -346,7 +346,7 @@ export default function Hero() {
         style={{ top: '4rem', height: '76vh', opacity: scrollFade, zIndex: 1 }}
       >
         <Image
-          src="/roro.png"
+          src="/roro.webp"
           alt=""
           fill
           sizes="100vw"
