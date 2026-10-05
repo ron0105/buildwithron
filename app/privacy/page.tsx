@@ -30,7 +30,7 @@ export default function PrivacyPage() {
 
           <div className="mt-12 space-y-10 font-body text-base sm:text-lg text-ink/75 leading-relaxed">
             <p className="text-ink/50 text-sm">
-              Last updated 9 August 2026. This page is in English only, because
+              Last updated 5 October 2026. This page is in English only, because
               translating a legal notice risks changing what it means.
             </p>
 
@@ -62,10 +62,11 @@ export default function PrivacyPage() {
                 Who else can see it
               </h2>
               <p>
-                Kit (formerly ConvertKit) stores the list and sends the emails.
-                They process your address on my instructions and nothing more.
-                Their servers are outside India, so your address is stored abroad.
-                I do not sell, rent, or share it with anyone else.
+                Vercel, which hosts this site, stores the list in private storage
+                that only I can read. When I start sending emails, the list moves
+                to an email service, and this page will name it before that
+                happens. Vercel&apos;s servers are outside India, so your address is
+                stored abroad. I do not sell, rent, or share it with anyone else.
               </p>
             </div>
 

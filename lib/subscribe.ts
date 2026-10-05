@@ -6,13 +6,22 @@
   without touching the site is part of owning it.
 
   Env vars (set in .env.local, never committed):
-    SUBSCRIBE_PROVIDER  one of: kit | buttondown | beehiiv | log
+    SUBSCRIBE_PROVIDER  one of: blob | kit | buttondown | beehiiv | log
     SUBSCRIBE_API_KEY   the provider's API key
     SUBSCRIBE_LIST_ID   form/publication id, where the provider needs one
 
   'log' is the default and writes to the server console instead of calling
   anyone. It lets the form be built and tested before an account exists.
+
+  'blob' keeps the list in a private Vercel Blob store connected to the
+  project. No key to set: Vercel injects the credentials when the store is
+  connected, and it is picked automatically when SUBSCRIBE_PROVIDER is
+  unset. It is a holding pen, not a newsletter tool; export it to a real
+  provider when it is time to send.
 */
+
+import { createHash } from 'node:crypto'
+import { put } from '@vercel/blob'
 
 export type SubscribeResult =
   | { ok: true }
@@ -28,13 +37,32 @@ export async function addSubscriber(rawEmail: string): Promise<SubscribeResult> 
   const email = rawEmail.trim().toLowerCase()
   if (!isPlausibleEmail(email)) return { ok: false, reason: 'invalid' }
 
-  const provider = process.env.SUBSCRIBE_PROVIDER ?? 'log'
+  /* A connected Blob store is enough to turn capture on: Vercel sets
+     BLOB_STORE_ID when the store is linked, so there is nothing to configure. */
+  const provider =
+    process.env.SUBSCRIBE_PROVIDER ?? (process.env.BLOB_STORE_ID ? 'blob' : 'log')
   const apiKey = process.env.SUBSCRIBE_API_KEY
   const listId = process.env.SUBSCRIBE_LIST_ID
 
   if (provider === 'log') {
     console.log(`[subscribe] would add: ${email}`)
     return { ok: true }
+  }
+
+  if (provider === 'blob') {
+    /* One file per address, named by its hash, so a repeat signup overwrites
+       instead of duplicating and the pathname never exposes the email. */
+    const id = createHash('sha256').update(email).digest('hex')
+    try {
+      await put(
+        `subscribers/${id}.json`,
+        JSON.stringify({ email, consentedAt: new Date().toISOString() }),
+        { access: 'private', contentType: 'application/json', allowOverwrite: true },
+      )
+      return { ok: true }
+    } catch {
+      return { ok: false, reason: 'provider' }
+    }
   }
 
   if (!apiKey) return { ok: false, reason: 'config' }
