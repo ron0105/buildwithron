@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { useLanguage } from '@/context/LanguageContext'
+import { outHref } from '@/lib/outbound'
 
 const socials = [
   { label: 'YouTube', href: 'https://www.youtube.com/@learn_withron' },
@@ -44,7 +45,7 @@ export default function Footer() {
               {socials.map((social) => (
                 <li key={social.label}>
                   <a
-                    href={social.href}
+                    href={outHref(social.href)}
                     target={social.href.startsWith('http') ? '_blank' : undefined}
                     rel={social.href.startsWith('http') ? 'noopener noreferrer' : undefined}
                     className="font-body text-sm text-paper/30 hover:text-paper transition-colors duration-200 flex items-center gap-3 group cursor-pointer"

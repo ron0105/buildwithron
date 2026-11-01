@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion'
 import { useLanguage } from '@/context/LanguageContext'
+import { outHref } from '@/lib/outbound'
 
 export default function ContactHero() {
   const { t } = useLanguage()
@@ -69,7 +70,7 @@ export default function ContactHero() {
           {ways.map((way, i) => (
             <motion.a
               key={way.label}
-              href={way.href}
+              href={outHref(way.href)}
               target={way.href.startsWith('http') ? '_blank' : undefined}
               rel={way.href.startsWith('http') ? 'noopener noreferrer' : undefined}
               initial={{ opacity: 0 }}

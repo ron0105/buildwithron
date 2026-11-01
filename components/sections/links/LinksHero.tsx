@@ -1,8 +1,8 @@
 'use client'
 
 import Link from 'next/link'
-import { track } from '@vercel/analytics'
 import { useLanguage } from '@/context/LanguageContext'
+import { outHref } from '@/lib/outbound'
 
 /*
   No entrance animation on this page, on purpose.
@@ -94,7 +94,6 @@ export default function LinksHero() {
               as "about me + where to find me" first, payment second. */}
           <a
             href="/pay"
-            onClick={() => track('link_click', { label: 'Pay' })}
             aria-label={t.linkNotePay}
             className="inline-flex items-center gap-1.5 rounded-full border border-pay text-pay font-heading font-semibold text-sm px-5 py-2 mt-6 hover:bg-pay hover:text-white transition-colors duration-200"
           >
@@ -131,16 +130,14 @@ export default function LinksHero() {
               </div>
             )
 
-            const onClick = () => track('link_click', { label: link.label })
-
             return (
               <li key={link.label}>
                 {isExternal ? (
-                  <a href={link.href} target="_blank" rel="noopener noreferrer" onClick={onClick}>
+                  <a href={outHref(link.href)} target="_blank" rel="noopener noreferrer">
                     {inner}
                   </a>
                 ) : (
-                  <Link href={link.href} onClick={onClick}>
+                  <Link href={link.href}>
                     {inner}
                   </Link>
                 )}

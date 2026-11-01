@@ -93,7 +93,7 @@ export default function EpisodeList({
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: '-40px' }}
                 transition={{ duration: 0.3, ease: 'easeOut' }}
-                href="https://www.youtube.com/@learn_withron"
+                href="/go/youtube"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="block group"

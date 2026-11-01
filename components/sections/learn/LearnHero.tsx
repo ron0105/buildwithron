@@ -40,7 +40,7 @@ export default function LearnHero() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.35, delay: 0.25 }}
-          href="https://www.youtube.com/@learn_withron"
+          href="/go/youtube"
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center gap-2 font-body text-sm text-muted hover:text-accent transition-colors duration-200 mt-8"

@@ -94,7 +94,7 @@ export default async function EpisodePage({ params }: { params: Promise<{ slug: 
               </Link>
             ) : (
               <a
-                href="https://www.youtube.com/@learn_withron"
+                href="/go/youtube"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="font-heading text-lg font-semibold text-ink hover:text-accent transition-colors duration-200"
