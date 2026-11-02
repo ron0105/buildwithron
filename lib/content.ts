@@ -115,6 +115,20 @@ export function getCrew(): CrewCopy {
   return data as CrewCopy
 }
 
+export type AboutCopy = {
+  title: string
+  sub: string
+  story: string[]
+  beliefs: { title: string; line: string; href: string }[]
+  photo: string
+  photoAlt: string
+}
+
+export function getAbout(): AboutCopy {
+  const { data } = matter(fs.readFileSync(path.join(CONTENT_DIR, 'about.md'), 'utf-8'))
+  return data as AboutCopy
+}
+
 export function getHome(): HomeCopy {
   const { data } = matter(fs.readFileSync(path.join(CONTENT_DIR, 'home.md'), 'utf-8'))
   return data as HomeCopy
