@@ -39,11 +39,7 @@ latest:
   title: Watch, read, steal the process.
 work:
   title: Things I've built and helped build.
-  featured:
-    title: The Adda Labs
-    line: A Mumbai venture lab where I test ideas before they become products.
-    image: /case-adda.webp
-  # Titles from lib/data.ts, in the order they show.
+  # The Adda Labs always leads. Then these, by title, from content/work.md.
   # TODO(Rohan): confirm which projects to feature first.
   selected:
     - TAL VI

@@ -75,11 +75,31 @@ export type HomeCopy = {
   latest: { title: string }
   work: {
     title: string
-    featured: { title: string; line: string; image: string }
     selected: string[]
     more: string
   }
   crew: { title: string; body: string; cta: string }
+}
+
+export type Project = {
+  title: string
+  status: string
+  role: string
+  year: string
+  tags: string[]
+  line: string
+  image: string
+  href: string
+  problem: string
+  what: string
+  changed: string
+}
+
+export type WorkCopy = { title: string; sub: string; projects: Project[] }
+
+export function getWork(): WorkCopy {
+  const { data } = matter(fs.readFileSync(path.join(CONTENT_DIR, 'work.md'), 'utf-8'))
+  return data as WorkCopy
 }
 
 export type CrewCopy = {

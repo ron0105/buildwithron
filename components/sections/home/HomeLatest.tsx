@@ -2,11 +2,7 @@ import Link from 'next/link'
 import SectionHead from '@/components/ui/SectionHead'
 import LiteYouTube from '@/components/ui/LiteYouTube'
 import type { EpisodeMeta, HomeCopy, NoteMeta } from '@/lib/content'
-
-function youtubeId(url: string) {
-  const m = url.match(/(?:v=|youtu\.be\/|embed\/)([\w-]{11})/)
-  return m ? m[1] : null
-}
+import { youtubeId } from '@/lib/youtube'
 
 /* 03: the newest aired episode, then the three newest notes. */
 export default function HomeLatest({

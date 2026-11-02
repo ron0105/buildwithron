@@ -3,6 +3,7 @@ import Link from 'next/link'
 import Nav from '@/components/sections/Nav'
 import Footer from '@/components/sections/Footer'
 import Prose from '@/components/ui/Prose'
+import NewsletterForm from '@/components/ui/NewsletterForm'
 import { getNote, getNotes } from '@/lib/content'
 
 export function generateStaticParams() {
@@ -14,67 +15,90 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const note = getNote(slug)
   if (!note) return {}
   return {
-    title: `${note.meta.title} — Rohan Tiwarekar`,
+    title: `${note.meta.title} · Rohan Tiwarekar`,
     description: note.meta.excerpt,
   }
 }
 
+type CSSVars = React.CSSProperties & Record<`--${string}`, string | number>
+
+/* One note, set for reading (36rem, about 68 characters a line at 19px). The sign-up box sits
+   at the end of the note, so the footer drops its own copy here. */
 export default async function NotePage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
   const note = getNote(slug)
   if (!note) notFound()
 
-  const others = getNotes().filter((n) => n.slug !== slug)
-  const next = others[0]
+  /* getNotes is newest first, so "newer" is the one before this in the list. */
+  const all = getNotes()
+  const at = all.findIndex((n) => n.slug === slug)
+  const newer = at > 0 ? all[at - 1] : null
+  const older = at < all.length - 1 ? all[at + 1] : null
 
   return (
     <main>
       <Nav />
-      <article className="px-5 sm:px-6 pt-28 sm:pt-40 pb-20 bg-paper">
-        <div className="max-w-2xl mx-auto">
-          <div className="flex items-center gap-3 mb-8">
-            <Link
-              href="/notes"
-              className="font-body text-xs text-muted uppercase tracking-widest hover:text-ink transition-colors duration-200"
-            >
+      <article className="wrap pt-32 md:pt-44 pb-[72px] md:pb-[120px]">
+        <div className="max-w-[36rem] mx-auto">
+          <p className="label flex items-center gap-3 rise" style={{ '--i': 0 } as CSSVars}>
+            <Link href="/notes" className="hover:text-ink transition-colors duration-200">
               ← Notes
             </Link>
-            <span className="block w-5 h-px bg-border" />
-            <span className="font-body text-xs text-muted/60">{note.meta.date}</span>
-            <span className="font-body text-xs text-muted/40">{note.meta.readTime}</span>
-          </div>
+            <span aria-hidden="true">·</span>
+            <span>{note.meta.date}</span>
+            <span aria-hidden="true">·</span>
+            <span>{note.meta.readTime}</span>
+          </p>
 
-          <h1 className="font-heading font-bold text-4xl md:text-5xl leading-tight text-ink mb-12">
+          <h1 className="display text-4xl sm:text-5xl md:text-6xl mt-6 mb-12 text-ink rise" style={{ '--i': 1 } as CSSVars}>
             {note.meta.title}
           </h1>
 
-          <Prose content={note.content} />
-
-          <div className="mt-14 border-l-2 border-accent pl-6">
-            <span className="font-body text-xs text-muted uppercase tracking-widest block mb-3">
-              Takeaway
-            </span>
-            <p className="font-heading text-xl md:text-2xl font-medium text-ink leading-snug">
-              {note.meta.takeaway}
-            </p>
+          <div className="rise" style={{ '--i': 2 } as CSSVars}>
+            <Prose content={note.content} />
           </div>
 
-          {next && (
-            <div className="mt-20 pt-10 border-t border-border">
-              <span className="font-body text-xs text-muted uppercase tracking-widest block mb-4">
-                Read next
-              </span>
-              <Link
-                href={`/notes/${next.slug}`}
-                className="font-heading text-2xl font-semibold text-ink hover:text-accent transition-colors duration-200"
-              >
-                {next.title} →
-              </Link>
+          {note.meta.takeaway && (
+            <div data-reveal className="mt-14 border-l-2 border-accent pl-6">
+              <p className="label">Takeaway</p>
+              <p className="font-heading font-bold text-2xl md:text-3xl leading-snug text-ink mt-3">
+                {note.meta.takeaway}
+              </p>
             </div>
           )}
+
+          <aside data-reveal className="mt-16 border border-ink rounded-[3px] p-6 md:p-8 bg-paper">
+            <p className="label">Newsletter</p>
+            <p className="font-heading font-bold text-2xl md:text-3xl text-ink mt-3">
+              Notes from the build<span className="text-accent">.</span>
+            </p>
+            <p className="font-body text-base text-muted mt-2 mb-6">Sent only when something changes.</p>
+            <NewsletterForm id="note-newsletter" />
+          </aside>
+
+          <nav aria-label="More notes" className="mt-16 pt-8 border-t border-ink grid gap-6 sm:grid-cols-2">
+            {older ? (
+              <Link href={`/notes/${older.slug}`} className="group">
+                <span className="label">← Older</span>
+                <span className="block font-heading font-bold text-xl text-ink mt-2 group-hover:text-accent transition-colors duration-200">
+                  {older.title}
+                </span>
+              </Link>
+            ) : (
+              <span />
+            )}
+            {newer && (
+              <Link href={`/notes/${newer.slug}`} className="group sm:text-right">
+                <span className="label">Newer →</span>
+                <span className="block font-heading font-bold text-xl text-ink mt-2 group-hover:text-accent transition-colors duration-200">
+                  {newer.title}
+                </span>
+              </Link>
+            )}
+          </nav>
         </div>
       </article>
-      <Footer />
+      <Footer newsletter={false} />
     </main>
   )
 }
