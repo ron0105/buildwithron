@@ -1,71 +1,88 @@
-'use client'
-
-import { motion } from 'framer-motion'
 import Link from 'next/link'
-import { useLanguage } from '@/context/LanguageContext'
-import { outHref } from '@/lib/outbound'
+import NewsletterForm from '@/components/ui/NewsletterForm'
+import { OUTBOUND, outHref } from '@/lib/outbound'
 
-const socials = [
-  { label: 'YouTube', href: 'https://www.youtube.com/@learn_withron' },
-  { label: 'Instagram', href: 'https://www.instagram.com/build.with.ron/' },
-  { label: 'X', href: 'https://x.com/build_withron' },
-  { label: 'LinkedIn', href: 'https://www.linkedin.com/in/ronnnn/' },
-  { label: 'GitHub', href: 'https://github.com/ron0105' },
-  { label: 'Email', href: 'mailto:rohan0105@gmail.com' },
+/* Every outbound link goes through /go/<key>, so a click is a counted page
+   view (Vercel Hobby drops custom events). */
+const channels = [
+  { label: 'YouTube', href: OUTBOUND.youtube },
+  { label: 'Instagram', href: OUTBOUND.instagram },
+  { label: 'LinkedIn', href: OUTBOUND.linkedin },
+  { label: 'The Adda Labs', href: OUTBOUND.tal },
 ]
 
-export default function Footer() {
-  const { t } = useLanguage()
+const more = [
+  { label: 'X', href: OUTBOUND.x },
+  { label: 'GitHub', href: OUTBOUND.github },
+  { label: 'Email', href: OUTBOUND.email },
+]
 
+/* newsletter={false} on pages that already carry the sign-up (home), so the
+   form never shows twice in a row. */
+export default function Footer({ newsletter = true }: { newsletter?: boolean }) {
   return (
-    <footer className="bg-ink py-16 sm:py-28 px-5 sm:px-6">
-      <div className="max-w-6xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-80px' }}
-          transition={{ duration: 0.7, ease: 'easeOut' }}
-          className="flex flex-col md:flex-row items-start md:items-end justify-between gap-10 sm:gap-16"
-        >
-          {/* CTA */}
-          <div>
-            <Link href="/contact">
-              <p className="font-heading text-4xl sm:text-5xl md:text-7xl font-bold text-paper mb-4 leading-none hover:text-accent transition-colors duration-200 cursor-pointer">
-                {t.footerCta}<span className="text-accent">.</span>
+    <footer className="bg-ink text-paper">
+      <div className="wrap section">
+        <div className="grid gap-14 md:grid-cols-[1.4fr_1fr] md:gap-20">
+          {newsletter ? (
+            <div>
+              <p className="label text-paper/50">Newsletter</p>
+              <h2 className="display text-4xl sm:text-5xl md:text-6xl mt-4">
+                Notes from the build<span className="text-accent">.</span>
+              </h2>
+              <p className="font-body text-base text-paper/60 mt-4 mb-8">
+                Sent only when something changes.
               </p>
-            </Link>
-            <p className="font-body text-base text-paper/40 max-w-sm leading-relaxed">
-              {t.footerSub}
+              <NewsletterForm tone="dark" id="footer-newsletter" />
+            </div>
+          ) : (
+            <p className="display text-5xl sm:text-6xl md:text-7xl">
+              Rohan
+              <br />
+              Tiwarekar<span className="text-accent">.</span>
             </p>
-          </div>
+          )}
 
-          {/* Links */}
-          <nav aria-label="Social links">
-            <ul className="flex flex-col gap-4">
-              {socials.map((social) => (
-                <li key={social.label}>
+          <nav aria-label="Elsewhere" className="md:pt-2">
+            <p className="label text-paper/50">Find me</p>
+            <ul className="mt-5 flex flex-col gap-3">
+              {channels.map((c) => (
+                <li key={c.label}>
                   <a
-                    href={outHref(social.href)}
-                    target={social.href.startsWith('http') ? '_blank' : undefined}
-                    rel={social.href.startsWith('http') ? 'noopener noreferrer' : undefined}
-                    className="font-body text-sm text-paper/30 hover:text-paper transition-colors duration-200 flex items-center gap-3 group cursor-pointer"
+                    href={outHref(c.href)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-3 font-heading text-2xl font-bold text-paper hover:text-accent transition-colors duration-200"
                   >
-                    <span className="w-4 h-px bg-paper/20 group-hover:bg-paper/60 group-hover:w-6 transition-all duration-200" />
-                    {social.label}
+                    {c.label} <span className="arrow text-accent" aria-hidden="true">→</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+            <ul className="mt-6 flex flex-wrap gap-x-5 gap-y-2">
+              {more.map((c) => (
+                <li key={c.label}>
+                  <a
+                    href={outHref(c.href)}
+                    target={c.href.startsWith('http') ? '_blank' : undefined}
+                    rel={c.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                    className="font-mono text-xs uppercase tracking-[0.08em] text-paper/50 hover:text-paper transition-colors duration-200"
+                  >
+                    {c.label}
                   </a>
                 </li>
               ))}
             </ul>
           </nav>
-        </motion.div>
+        </div>
 
-        {/* Bottom bar */}
-        <div className="mt-12 sm:mt-24 pt-8 border-t border-paper/10 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-          <span className="font-heading font-bold text-paper/20 text-sm tracking-[0.2em] uppercase">
-            Rohan
-          </span>
-          <span className="font-body text-xs text-paper/20">
-            {t.footerBuilt} &copy; {new Date().getFullYear()}
+        <div className="mt-16 md:mt-24 pt-6 border-t border-paper/15 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <span className="font-body text-sm text-paper/60">Built in public in Mumbai.</span>
+          <span className="flex items-center gap-5 font-mono text-xs uppercase tracking-[0.08em] text-paper/40">
+            <Link href="/privacy" className="hover:text-paper transition-colors duration-200">
+              Privacy
+            </Link>
+            <span>&copy; {new Date().getFullYear()} Rohan Tiwarekar</span>
           </span>
         </div>
       </div>

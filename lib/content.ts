@@ -38,6 +38,7 @@ export type NowData = {
   episode: NowItem
   note: NowItem
   live?: LiveStatus
+  lines?: string[]
 }
 
 export function getNow(): NowData | null {
@@ -45,6 +46,44 @@ export function getNow(): NowData | null {
   if (!fs.existsSync(file)) return null
   const { data } = matter(fs.readFileSync(file, 'utf-8'))
   return data as NowData
+}
+
+export type HomeCopy = {
+  hero: {
+    label: string
+    lines: string[]
+    sub: string
+    for: string
+    watch: string
+    notes: string
+    photo: string
+    photoAlt: string
+  }
+  sheet: {
+    label: string
+    title: string
+    body: string
+    rows: string[]
+    cta: string
+    file: string
+    fileLabel: string
+    story: string
+    storyHref: string
+  }
+  now: { title: string; more: string }
+  latest: { title: string }
+  work: {
+    title: string
+    featured: { title: string; line: string; image: string }
+    selected: string[]
+    more: string
+  }
+  crew: { title: string; body: string; cta: string }
+}
+
+export function getHome(): HomeCopy {
+  const { data } = matter(fs.readFileSync(path.join(CONTENT_DIR, 'home.md'), 'utf-8'))
+  return data as HomeCopy
 }
 
 function readCollection(collection: string) {

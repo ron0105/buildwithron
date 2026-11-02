@@ -14,6 +14,7 @@ export const OUTBOUND = {
   linkedin: 'https://www.linkedin.com/in/ronnnn/',
   github: 'https://github.com/ron0105',
   'contact-card': '/rohan.vcf',
+  tal: 'https://www.theaddalabs.com/',
 } as const
 
 export type OutboundKey = keyof typeof OUTBOUND

@@ -1,7 +1,7 @@
 'use client'
 
-import { createContext, useContext, useState, useEffect, useCallback } from 'react'
-import { dict, defaultLocale, isLocale, type Dict, type Locale } from '@/lib/i18n'
+import { createContext, useContext } from 'react'
+import { dict, defaultLocale, type Dict, type Locale } from '@/lib/i18n'
 
 interface LanguageContextType {
   lang: Locale
@@ -15,25 +15,12 @@ const LanguageContext = createContext<LanguageContextType>({
   t: dict[defaultLocale],
 })
 
+/* English only since the Nov 2026 revamp: the switcher is gone and a saved
+   language from before is ignored. Pages still read their strings through
+   t until each one is rebuilt with its new copy. */
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
-  const [lang, setLangState] = useState<Locale>(defaultLocale)
-
-  /* Server renders English, the client corrects it on mount. Same shape as
-     ThemeContext. A saved non-English choice shows one frame of English first;
-     the alternative is a hydration mismatch, which is worse. */
-  useEffect(() => {
-    const saved = localStorage.getItem('lang')
-    if (isLocale(saved) && saved !== defaultLocale) {
-      setLangState(saved)
-      document.documentElement.lang = saved
-    }
-  }, [])
-
-  const setLang = useCallback((next: Locale) => {
-    setLangState(next)
-    document.documentElement.lang = next
-    localStorage.setItem('lang', next)
-  }, [])
+  const lang: Locale = defaultLocale
+  const setLang = () => {}
 
   return (
     <LanguageContext.Provider value={{ lang, setLang, t: dict[lang] }}>

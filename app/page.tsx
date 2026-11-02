@@ -1,23 +1,32 @@
+import fs from 'fs'
+import path from 'path'
 import Nav from '@/components/sections/Nav'
-import Hero from '@/components/sections/Hero'
-import HubTiles from '@/components/sections/HubTiles'
-import NowStrip from '@/components/sections/NowStrip'
-import Experiments from '@/components/sections/Experiments'
-import Thinking from '@/components/sections/Thinking'
-import JoinList from '@/components/sections/JoinList'
 import Footer from '@/components/sections/Footer'
+import HomeHero from '@/components/sections/home/HomeHero'
+import HomeSheet from '@/components/sections/home/HomeSheet'
+import HomeLatest from '@/components/sections/home/HomeLatest'
+import HomeWork from '@/components/sections/home/HomeWork'
+import HomeCrew from '@/components/sections/home/HomeCrew'
+import HomeNow from '@/components/sections/home/HomeNow'
+import { getEpisodes, getHome, getNotes, getNow } from '@/lib/content'
 
+/* One main ask per screen: the free sheet straight after the hero, proof
+   (latest, work) in the middle, the crew as the big ask near the end. */
 export default function Home() {
+  const copy = getHome()
+  const episode = getEpisodes().find((e) => e.status === 'aired') ?? null
+  const hasSheet = fs.existsSync(path.join(process.cwd(), 'public', copy.sheet.file))
+
   return (
     <main>
       <Nav />
-      <Hero />
-      <HubTiles />
-      <NowStrip />
-      <Experiments />
-      <Thinking />
-      <JoinList />
-      <Footer />
+      <HomeHero copy={copy.hero} />
+      <HomeSheet copy={copy.sheet} hasFile={hasSheet} />
+      <HomeLatest copy={copy.latest} episode={episode} notes={getNotes()} />
+      <HomeWork copy={copy.work} />
+      <HomeCrew copy={copy.crew} />
+      <HomeNow copy={copy.now} lines={getNow()?.lines ?? []} />
+      <Footer newsletter={false} />
     </main>
   )
 }

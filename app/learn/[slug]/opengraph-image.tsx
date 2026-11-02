@@ -20,7 +20,7 @@ export default async function Image({ params }: { params: Promise<{ slug: string
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between',
-          backgroundColor: '#0D0D0D',
+          backgroundColor: '#14213D',
           padding: 80,
         }}
       >
@@ -28,8 +28,8 @@ export default async function Image({ params }: { params: Promise<{ slug: string
           <div
             style={{
               display: 'flex',
-              backgroundColor: '#FF4D00',
-              color: '#0D0D0D',
+              backgroundColor: '#C2410C',
+              color: '#F7F6F3',
               fontSize: 26,
               fontWeight: 700,
               padding: '10px 24px',
@@ -38,7 +38,7 @@ export default async function Image({ params }: { params: Promise<{ slug: string
           >
             {num}
           </div>
-          <div style={{ display: 'flex', fontSize: 24, color: '#888888', letterSpacing: 6 }}>
+          <div style={{ display: 'flex', fontSize: 24, color: '#A9B0C0', letterSpacing: 6 }}>
             LEARN WITH RON
           </div>
         </div>
@@ -47,7 +47,7 @@ export default async function Image({ params }: { params: Promise<{ slug: string
             display: 'flex',
             fontSize: 72,
             fontWeight: 700,
-            color: '#F2F1EE',
+            color: '#F7F6F3',
             letterSpacing: -2,
             lineHeight: 1.1,
           }}
@@ -55,10 +55,10 @@ export default async function Image({ params }: { params: Promise<{ slug: string
           {question}
         </div>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <div style={{ display: 'flex', fontSize: 24, color: '#555555', letterSpacing: 4 }}>
+          <div style={{ display: 'flex', fontSize: 24, color: '#7D869B', letterSpacing: 4 }}>
             BUILDWITHRON.COM
           </div>
-          <div style={{ display: 'flex', width: 120, height: 8, backgroundColor: '#FF4D00' }} />
+          <div style={{ display: 'flex', width: 120, height: 8, backgroundColor: '#C2410C' }} />
         </div>
       </div>
     ),

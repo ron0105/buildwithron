@@ -4,8 +4,11 @@
   /* Colors */
   --color-paper: #F7F6F3;
   --color-paper-dark: #E6E5E2;
-  --color-ink: #0D0D0D;
-  --color-accent: #FF4D00;
+  /* Nov 2, 2026: deep navy for text and dark bands (calm, trustworthy) and a
+     deeper burnt orange for energy. #C2410C carries paper-coloured button
+     text at 4.8:1, so buttons pass AA; the old #FF4D00 needed ink text. */
+  --color-ink: #14213D;
+  --color-accent: #C2410C;
   --color-muted: #6B6B6B;
   --color-border: #E3E2DF;
   /* Learn With Ron channel purple, sampled from the actual avatar mark, not
@@ -18,10 +21,16 @@
      instead of two different greens that happen to be close. */
   --color-pay: #508870;
 
-  /* Fonts. Devanagari sits after Inter so Hindi and Marathi glyphs fall
-     through to Noto per character, while Latin stays Inter. */
-  --font-heading: var(--font-inter), var(--font-devanagari), sans-serif;
-  --font-body: var(--font-inter), var(--font-devanagari), sans-serif;
+  /* Fonts. Bricolage for the big stacked headlines, Inter for reading,
+     JetBrains Mono for the numbered labels, dates and tags. font-heading
+     points at the display face so every existing heading picks it up. */
+  --font-display: var(--font-bricolage), sans-serif;
+  --font-heading: var(--font-bricolage), sans-serif;
+  --font-body: var(--font-inter), sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, monospace;
+
+  /* The one easing curve for every reveal, hover and draw. */
+  --ease-notebook: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 html {
@@ -36,43 +45,31 @@ body {
 }
 
 ::selection {
-  background-color: #FF4D00;
+  background-color: var(--color-accent);
   color: #F7F6F3;
 }
 
+/* The notebook page: a faint dot grid on the paper, ~7% ink. A background
+   on body rather than an overlay, so it sits under everything and costs no
+   extra layer. Dark bands paint over it with their own background. */
 body {
   background-color: var(--color-paper);
+  background-image: radial-gradient(
+    color-mix(in srgb, var(--color-ink) 7%, transparent) 1px,
+    transparent 1.2px
+  );
+  background-size: 22px 22px;
   position: relative;
 }
 
-body::after {
-  content: "";
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0.04;
-  z-index: 9999;
-  pointer-events: none;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3%3Ffilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.6' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-}
-
-/* Dark theme — must be in @layer base to override @layer theme vars */
+/* No dark theme since the Nov 2026 revamp: the dark bands carry the contrast.
+   Kept in @layer base so it overrides the @layer theme vars. */
 @layer base {
-  [data-theme="dark"] {
-    --color-paper: #111111;
-    --color-ink: #F2F1EE;
-    --color-paper-dark: #1A1A1A;
-    --color-muted: #888888;
-    --color-border: #272727;
-  }
-
   /* Sections that are always dark (footer, principles) — pin CSS vars to
      light-mode values so bg-ink stays black and text-paper stays cream */
   footer, .always-dark {
     --color-paper: #F7F6F3;
-    --color-ink: #0D0D0D;
+    --color-ink: #14213D;
     --color-muted: #6B6B6B;
     --color-border: #E3E2DF;
   }
@@ -128,15 +125,155 @@ body:has(.card-palette) {
 }
 
 .page-fade-in {
-  animation: page-fade-in 0.2s ease-out both;
+  animation: page-fade-in 0.15s ease-out both;
 }
 
-/* Custom cursor: only engaged once CustomCursor.tsx confirms a fine
-   pointer + no reduced-motion preference, so touch/reduced-motion visitors
-   keep their native cursor untouched. */
-.custom-cursor-active,
-.custom-cursor-active * {
-  cursor: none !important;
+/* ---------- Layout helpers ----------
+   In the components layer so Tailwind utilities can still override them. */
+@layer components {
+
+.wrap {
+  max-width: 1160px;
+  margin-inline: auto;
+  padding-inline: 20px;
+}
+@media (min-width: 640px) {
+  .wrap { padding-inline: 32px; }
+}
+
+.section {
+  padding-block: 72px;
+}
+@media (min-width: 768px) {
+  .section { padding-block: 120px; }
+}
+
+/* Numbered section labels: "01 — NOW". */
+.label {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+@media (min-width: 768px) {
+  .label { font-size: 13px; }
+}
+
+/* Big stacked headlines. */
+.display {
+  font-family: var(--font-display);
+  font-weight: 800;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+}
+}
+
+/* Every keyboard focus gets the same orange ring. */
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+/* ---------- Motion (spec M1-M7) ----------
+   CSS and IntersectionObserver only. Only transform, opacity and
+   stroke-dashoffset move. Everything below collapses under reduced motion. */
+
+/* M1: hero lines rise and fade in, 120ms apart. Set --i on each line. */
+@keyframes rise {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: none; }
+}
+.rise {
+  animation: rise 0.6s var(--ease-notebook) both;
+  animation-delay: calc(var(--i, 0) * 120ms);
+}
+
+/* M2: a hand-drawn SVG stroke draws itself. Give the path pathLength="1"
+   and set --delay to land after the headline. */
+@keyframes draw {
+  to { stroke-dashoffset: 0; }
+}
+.draw path,
+.draw line {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: draw 0.6s var(--ease-notebook) forwards;
+  animation-delay: var(--delay, 0ms);
+}
+
+/* M3: the live dot, a REC light. */
+@keyframes live-pulse {
+  from { transform: scale(1); opacity: 1; }
+  to   { transform: scale(1.4); opacity: 0; }
+}
+.live-dot {
+  position: relative;
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 9999px;
+  background: var(--color-accent);
+}
+.live-dot::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: inherit;
+  animation: live-pulse 2s ease-out infinite;
+}
+
+/* M4 + M5: scroll reveals. Content is visible by default. Reveal.tsx only
+   arms elements that start below the fold, after the page has loaded, so
+   nothing above the fold is ever hidden and no-JS visitors see everything.
+   Stagger with --i (step via --stagger, default 60ms for cards). */
+[data-reveal].reveal-armed {
+  opacity: 0;
+  transform: translateY(var(--reveal-y, 12px));
+}
+[data-reveal].reveal-armed.reveal-in {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 0.5s var(--ease-notebook),
+    transform 0.5s var(--ease-notebook);
+  transition-delay: calc(var(--i, 0) * var(--stagger, 60ms));
+}
+
+/* M5: cards lift 3px, their arrow moves 4px right. */
+.card-lift {
+  transition: transform 0.4s var(--ease-notebook);
+}
+.card-lift:hover {
+  transform: translateY(-3px);
+}
+.arrow {
+  display: inline-block;
+  transition: transform 0.4s var(--ease-notebook);
+}
+.card-lift:hover .arrow,
+.btn:hover .arrow,
+a:hover > .arrow {
+  transform: translateX(4px);
+}
+
+/* M6: buttons press in a touch. */
+.btn {
+  transition:
+    transform 0.15s var(--ease-notebook),
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+.btn:active {
+  transform: scale(0.98);
+}
+
+/* Real photos: slightly desaturated, thin ink border, barely rounded. */
+.photo {
+  filter: saturate(0.8);
+  border: 1px solid var(--color-ink);
+  border-radius: 3px;
 }
 
 /* Respect reduced motion */
@@ -147,5 +284,22 @@ body:has(.card-palette) {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+
+  [data-reveal].reveal-armed {
+    opacity: 1;
+    transform: none;
+  }
+  .rise {
+    animation: none;
+  }
+  .draw path,
+  .draw line {
+    stroke-dashoffset: 0;
+    animation: none;
+  }
+  .live-dot::after {
+    animation: none;
+    opacity: 0;
   }
 }

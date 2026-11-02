@@ -1,4 +1,10 @@
 ---
+# lines: the 3-4 short lines on the home page "02 — Now" section.
+# TODO(Rohan): confirm these. Taken from the revamp brief's examples.
+lines:
+  - Revamping this site, in public
+  - Building The Founding Five
+  - Growing The Adda Labs
 updated: Jul 3, 2026
 live:
   status: scheduled
