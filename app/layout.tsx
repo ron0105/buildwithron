@@ -35,6 +35,9 @@ export const metadata: Metadata = {
   },
   description:
     'I build things and figure it out in public. Co-founder of The Adda Labs in Mumbai. Live sessions, honest notes, and the parts that break.',
+  alternates: {
+    types: { 'application/rss+xml': [{ url: '/notes/rss.xml', title: 'Notes · Rohan Tiwarekar' }] },
+  },
 }
 
 export default function RootLayout({

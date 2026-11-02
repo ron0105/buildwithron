@@ -6,6 +6,8 @@ import Footer from '@/components/sections/Footer'
 import Todo from '@/components/ui/Todo'
 import { getAbout } from '@/lib/content'
 import { OUTBOUND, outHref } from '@/lib/outbound'
+import JsonLd from '@/components/ui/JsonLd'
+import { person } from '@/lib/schema'
 
 export const metadata: Metadata = {
   title: 'About · Rohan Tiwarekar',
@@ -42,6 +44,7 @@ export default function AboutPage() {
 
   return (
     <main>
+      <JsonLd data={person} />
       <Nav />
 
       <section className="wrap pt-32 md:pt-44 pb-[72px] md:pb-[120px] grid gap-12 md:grid-cols-[1.5fr_1fr] md:gap-20 md:items-end">

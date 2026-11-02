@@ -78,7 +78,7 @@ export default function Footer({ newsletter = true }: { newsletter?: boolean }) 
 
         <div className="mt-16 md:mt-24 pt-6 border-t border-paper/15 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <span className="font-body text-sm text-paper/60">Built in public in Mumbai.</span>
-          <span className="flex items-center gap-5 font-mono text-xs uppercase tracking-[0.08em] text-paper/40">
+          <span className="flex items-center gap-5 font-mono text-xs uppercase tracking-[0.08em] text-paper/60">
             <Link href="/privacy" className="hover:text-paper transition-colors duration-200">
               Privacy
             </Link>

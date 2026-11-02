@@ -3,7 +3,7 @@ import PayHero from '@/components/sections/pay/PayHero'
 import { pay, upiUri, upiQrSvg, payApps, appUri } from '@/lib/pay'
 
 export const metadata: Metadata = {
-  title: 'Pay — Rohan Tiwarekar',
+  title: 'Pay · Rohan Tiwarekar',
   description: 'Send a UPI payment to Rohan Tiwarekar.',
   /* A payment endpoint has no business in search results or link previews. */
   robots: { index: false, follow: false },

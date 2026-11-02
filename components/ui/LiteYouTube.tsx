@@ -7,7 +7,17 @@ import { useState } from 'react'
   pull YouTube's ~1MB of script on load (Lighthouse target). The iframe is the
   no-cookie domain and autoplays because the click was the play.
 */
-export default function LiteYouTube({ id, title }: { id: string; title: string }) {
+/* priority: the thumbnail is the biggest thing above the fold (it's the
+   page's LCP), so load it straight away instead of lazily. */
+export default function LiteYouTube({
+  id,
+  title,
+  priority = false,
+}: {
+  id: string
+  title: string
+  priority?: boolean
+}) {
   const [playing, setPlaying] = useState(false)
 
   if (playing) {
@@ -35,7 +45,8 @@ export default function LiteYouTube({ id, title }: { id: string; title: string }
       <img
         src={`https://i.ytimg.com/vi/${id}/hqdefault.jpg`}
         alt=""
-        loading="lazy"
+        loading={priority ? 'eager' : 'lazy'}
+        fetchPriority={priority ? 'high' : 'auto'}
         decoding="async"
         className="absolute inset-0 w-full h-full object-cover"
       />

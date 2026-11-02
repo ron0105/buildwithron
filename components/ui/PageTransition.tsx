@@ -1,5 +1,6 @@
 'use client'
 
+import { useState } from 'react'
 import { usePathname } from 'next/navigation'
 
 /*
@@ -9,9 +10,10 @@ import { usePathname } from 'next/navigation'
   first contentful paint against a 9ms TTFB, with the markup already delivered
   and simply held invisible.
 
-  Same 200ms fade, expressed in CSS (see globals.css). It now starts when the
-  browser paints instead of when the bundle finishes, and it costs the page no
-  JavaScript at all.
+  Same 150ms fade, expressed in CSS (see globals.css), and only between pages.
+  On the first load the page paints as-is: fading the whole page in from
+  opacity 0 made Lighthouse report no paint at all on text-only pages (every
+  /notes page failed with NO_FCP).
 
   `key` still remounts the element on navigation, which is what replays the
   animation between routes.
@@ -22,9 +24,10 @@ export default function PageTransition({
   children: React.ReactNode
 }) {
   const pathname = usePathname()
+  const [firstPath] = useState(pathname)
 
   return (
-    <div key={pathname} className="page-fade-in">
+    <div key={pathname} className={pathname === firstPath ? undefined : 'page-fade-in'}>
       {children}
     </div>
   )

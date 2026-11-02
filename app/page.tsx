@@ -9,6 +9,8 @@ import HomeWork from '@/components/sections/home/HomeWork'
 import HomeCrew from '@/components/sections/home/HomeCrew'
 import HomeNow from '@/components/sections/home/HomeNow'
 import { getEpisodes, getHome, getNotes, getNowSections } from '@/lib/content'
+import JsonLd from '@/components/ui/JsonLd'
+import { person } from '@/lib/schema'
 
 /* One main ask per screen: the free sheet straight after the hero, proof
    (latest, work) in the middle, the crew as the big ask near the end. */
@@ -19,6 +21,7 @@ export default function Home() {
 
   return (
     <main>
+      <JsonLd data={person} />
       <Nav />
       <HomeHero copy={copy.hero} />
       <HomeSheet copy={copy.sheet} hasFile={hasSheet} />

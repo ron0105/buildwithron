@@ -43,8 +43,10 @@ export default function LearnPage() {
           {episodes.map((ep, i) => {
             const id = youtubeId(ep.youtubeUrl)
             return (
-              <li key={ep.slug} data-reveal style={{ '--i': i } as React.CSSProperties}>
-                {id && <LiteYouTube id={id} title={ep.title} />}
+              /* The first card is above the fold: no scroll fade, so it
+                 paints before the script that runs the fades. */
+              <li key={ep.slug} data-reveal={i > 0 ? '' : undefined} style={{ '--i': i } as React.CSSProperties}>
+                {id && <LiteYouTube id={id} title={ep.title} priority={i === 0} />}
                 <p className="label mt-5">
                   Ep {String(ep.episode).padStart(3, '0')} · {ep.date}
                 </p>

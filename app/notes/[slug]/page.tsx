@@ -5,6 +5,8 @@ import Footer from '@/components/sections/Footer'
 import Prose from '@/components/ui/Prose'
 import NewsletterForm from '@/components/ui/NewsletterForm'
 import { getNote, getNotes } from '@/lib/content'
+import JsonLd from '@/components/ui/JsonLd'
+import { article } from '@/lib/schema'
 
 export function generateStaticParams() {
   return getNotes().map((note) => ({ slug: note.slug }))
@@ -37,6 +39,7 @@ export default async function NotePage({ params }: { params: Promise<{ slug: str
 
   return (
     <main>
+      <JsonLd data={article(note.meta)} />
       <Nav />
       <article className="wrap pt-32 md:pt-44 pb-[72px] md:pb-[120px]">
         <div className="max-w-[36rem] mx-auto">

@@ -26,7 +26,9 @@ export default function WorkPage() {
       <section className="wrap pb-[72px] md:pb-[120px]">
         <ol className="flex flex-col gap-6 md:gap-10">
           {work.projects.map((p, i) => (
-            <li key={p.title} data-reveal>
+            /* The first project is above the fold: no scroll fade, image
+               loaded first, so it paints before the script that runs fades. */
+            <li key={p.title} data-reveal={i > 0 ? '' : undefined}>
               <article
                 className={`grid md:grid-cols-2 border border-ink rounded-[3px] overflow-hidden bg-paper ${
                   i % 2 === 1 ? 'md:[&>*:first-child]:order-2' : ''
@@ -38,6 +40,8 @@ export default function WorkPage() {
                     alt=""
                     fill
                     sizes="(min-width: 768px) 560px, 100vw"
+                    loading={i === 0 ? 'eager' : 'lazy'}
+                    fetchPriority={i === 0 ? 'high' : 'auto'}
                     className="object-cover saturate-[0.8]"
                   />
                 </div>

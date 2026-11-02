@@ -58,7 +58,7 @@ export default async function EpisodePage({ params }: { params: Promise<{ slug: 
 
         {id && (
           <div className="max-w-[880px] mx-auto mt-12 rise" style={{ '--i': 2 } as CSSVars}>
-            <LiteYouTube id={id} title={ep.meta.title} />
+            <LiteYouTube id={id} title={ep.meta.title} priority />
           </div>
         )}
 
