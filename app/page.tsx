@@ -8,7 +8,7 @@ import HomeLatest from '@/components/sections/home/HomeLatest'
 import HomeWork from '@/components/sections/home/HomeWork'
 import HomeCrew from '@/components/sections/home/HomeCrew'
 import HomeNow from '@/components/sections/home/HomeNow'
-import { getEpisodes, getHome, getNotes, getNow } from '@/lib/content'
+import { getEpisodes, getHome, getNotes, getNowSections } from '@/lib/content'
 
 /* One main ask per screen: the free sheet straight after the hero, proof
    (latest, work) in the middle, the crew as the big ask near the end. */
@@ -25,7 +25,10 @@ export default function Home() {
       <HomeLatest copy={copy.latest} episode={episode} notes={getNotes()} />
       <HomeWork copy={copy.work} />
       <HomeCrew copy={copy.crew} />
-      <HomeNow copy={copy.now} lines={getNow()?.lines ?? []} />
+      <HomeNow
+        copy={copy.now}
+        lines={getNowSections().find((s) => s.title === 'Building')?.items ?? []}
+      />
       <Footer newsletter={false} />
     </main>
   )

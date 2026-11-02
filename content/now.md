@@ -1,11 +1,10 @@
 ---
-# lines: the 3-4 short lines on the home page "02 — Now" section.
-# TODO(Rohan): confirm these. Taken from the revamp brief's examples.
-lines:
-  - Revamping this site, in public
-  - Building The Founding Five
-  - Growing The Adda Labs
-updated: Jul 3, 2026
+# /now page and the home page's Now section both read this file.
+# Edit the list under each heading below, then change `updated`.
+# A line starting with "TODO" shows on previews only, never on the live site,
+# and a heading with nothing else under it is hidden on the live site.
+updated: Nov 2, 2026
+# The fields below feed the /learn page's "coming up" line. Not shown on /now.
 live:
   status: scheduled
   text: "Ep 002 — we give the AI good footage. Coming soon on YouTube."
@@ -20,3 +19,21 @@ note:
   text: "Discovery comes after the contract"
   href: /notes/discovery-comes-after-the-contract
 ---
+
+## Building
+
+- Revamping this site, in public
+- Building The Founding Five
+- Growing The Adda Labs
+
+## Learning
+
+- TODO(Rohan): what you're learning right now
+
+## Reading
+
+- TODO(Rohan): what you're reading
+
+## Not doing
+
+- TODO(Rohan): what you've said no to this month

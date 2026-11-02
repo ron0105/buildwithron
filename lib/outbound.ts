@@ -15,6 +15,8 @@ export const OUTBOUND = {
   github: 'https://github.com/ron0105',
   'contact-card': '/rohan.vcf',
   tal: 'https://www.theaddalabs.com/',
+  /* Founding Five applications land in email until the TAL page is live. */
+  'crew-apply': 'mailto:rohan0105@gmail.com?subject=Founding%20Five%20application',
 } as const
 
 export type OutboundKey = keyof typeof OUTBOUND

@@ -38,8 +38,9 @@ export type NowData = {
   episode: NowItem
   note: NowItem
   live?: LiveStatus
-  lines?: string[]
 }
+
+export type NowSection = { title: string; items: string[]; todo: string | null }
 
 export function getNow(): NowData | null {
   const file = path.join(CONTENT_DIR, 'now.md')
@@ -81,9 +82,48 @@ export type HomeCopy = {
   crew: { title: string; body: string; cta: string }
 }
 
+export type CrewCopy = {
+  title: string
+  body: string
+  culture: string
+  steps: { title: string; text: string }[]
+  apply: { cta: string; note: string }
+}
+
+export function getCrew(): CrewCopy {
+  const { data } = matter(fs.readFileSync(path.join(CONTENT_DIR, 'crew.md'), 'utf-8'))
+  return data as CrewCopy
+}
+
 export function getHome(): HomeCopy {
   const { data } = matter(fs.readFileSync(path.join(CONTENT_DIR, 'home.md'), 'utf-8'))
   return data as HomeCopy
+}
+
+/* The /now body is plain Markdown: a "## Heading" per section, a "- " line
+   per item. Kept that simple on purpose, so updating it takes two minutes.
+   Lines starting with TODO are pulled out so the page can show them on
+   previews only. */
+export function getNowSections(): NowSection[] {
+  const file = path.join(CONTENT_DIR, 'now.md')
+  if (!fs.existsSync(file)) return []
+  const { content } = matter(fs.readFileSync(file, 'utf-8'))
+  return content
+    .split(/^## /m)
+    .slice(1)
+    .map((block) => {
+      const [title, ...rest] = block.split('\n')
+      const lines = rest
+        .map((l) => l.trim())
+        .filter((l) => l.startsWith('- '))
+        .map((l) => l.slice(2).trim())
+      const todo = lines.find((l) => l.startsWith('TODO')) ?? null
+      return {
+        title: title.trim(),
+        items: lines.filter((l) => !l.startsWith('TODO')),
+        todo: todo ? todo.replace(/^TODO(\([^)]*\))?:?\s*/, '') : null,
+      }
+    })
 }
 
 function readCollection(collection: string) {
