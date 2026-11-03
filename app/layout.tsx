@@ -30,11 +30,11 @@ const jetbrains = JetBrains_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL('https://buildwithron.com'),
   title: {
-    default: 'Rohan Tiwarekar · Building in public',
+    default: 'Rohan Tiwarekar · Your degree is not your proof',
     template: '%s',
   },
   description:
-    'I build things and figure it out in public. Co-founder of The Adda Labs in Mumbai. Live sessions, honest notes, and the parts that break.',
+    'For final-year students and recent grads in India. Get the free one-page weekly sheet, or spend 12 days on real projects with The Adda Labs.',
   alternates: {
     types: { 'application/rss+xml': [{ url: '/notes/rss.xml', title: 'Notes · Rohan Tiwarekar' }] },
   },

@@ -1,14 +1,12 @@
 /*
-  The numbered label and title every section opens with. M4: the label
+  The plain label and title every section opens with (no numbers, brief v2). M4: the label
   fades up first, the title 80ms after it.
 */
 export default function SectionHead({
-  n,
   label,
   title,
   tone = 'light',
 }: {
-  n: number
   label: string
   title: string
   tone?: 'light' | 'dark'
@@ -16,7 +14,7 @@ export default function SectionHead({
   return (
     <header style={{ '--stagger': '80ms' } as React.CSSProperties}>
       <p data-reveal className={`label ${tone === 'dark' ? 'text-paper/50' : ''}`} style={{ '--i': 0 } as React.CSSProperties}>
-        {String(n).padStart(2, '0')} — {label}
+        {label}
       </p>
       <h2
         data-reveal

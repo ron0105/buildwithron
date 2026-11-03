@@ -8,6 +8,11 @@ const nextConfig: NextConfig = {
         destination: "/notes",
         permanent: true,
       },
+      {
+        source: "/crew",
+        destination: "/team",
+        statusCode: 301,
+      },
     ];
   },
 };

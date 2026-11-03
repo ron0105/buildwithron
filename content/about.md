@@ -21,7 +21,7 @@ beliefs:
     href: /notes/starting-as-i-am
   - title: Ownership over everything
     line: Hire for ownership. Develop for competence. Retain for reliability.
-    href: /crew
+    href: /team
 # TODO(Rohan): a real, recent photo. Until then the portrait stands in.
 photo: /roro.webp
 photoAlt: Rohan Tiwarekar

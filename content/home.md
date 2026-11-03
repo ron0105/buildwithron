@@ -1,53 +1,64 @@
 ---
 # Home page copy. Edit the words here, not in the components.
-# Section order and numbers are fixed in app/page.tsx.
+# Section order is fixed in app/page.tsx. Words from the revamp brief v2 (5.1).
 hero:
   label: Building in public
+  # Stacked headline, one line per item. "strike" gets the pen line through
+  # it, "underline" gets the hand-drawn underline. Each must appear in a line.
   lines:
-    - I build things
-    - and figure it out
-    - in public.
-  sub: I don't know where this goes yet. That's the part worth documenting.
-  # DRAFT(Nov 2): who the site is for, decided by Rohan. Wording is mine, check it.
-  for: For builders, learners and problem solvers.
-  watch: Watch the latest
-  notes: Get the weekly sheet
+    - Your degree
+    - is not your proof.
+    - Real work is.
+  strike: degree
+  underline: Real work
+  sub: I'm Rohan. I build things in public in Mumbai. I help final-year students and recent grads do real work they can show.
+  # What the free sheet is, right above the form. The consent box under the
+  # form already says "No spam. Unsubscribe anytime."
+  small: The one page that got me finishing things.
+  cta: Get the free sheet
+  cohort: See The 12-Day Build
   # TODO(Rohan): a real photo of you at work, cropped tight. Until then the portrait stands in.
   photo: /roro.webp
   photoAlt: Rohan Tiwarekar
-# The free thing (lead magnet). Words taken from the "Doing more, planning
-# less" note. DRAFT(Nov 2): check the title and the three rows.
+# The free sheet. Both sign-ups on the home page hand it over on the spot.
 sheet:
+  file: /weekly-sheet.pdf
+  fileLabel: Download the free sheet (PDF)
+  # Shown after sign-up, so the next step is one tap away.
+  next: Want real proof to show? See The 12-Day Build
+proof:
+  label: Proof
+  title: This is real work, not theory.
+  # The Adda Labs always leads. Then these, by title, from content/work.md.
+  # DRAFT(Nov 2): client work picked first because it reads as "real work"
+  # to a student. TODO(Rohan): confirm, and add a real number or client quote.
+  selected:
+    - TPC Pharma
+    - Shutterphrase
+  more: All work
+latest:
+  label: Latest
+  title: Watch how I work.
+cohort:
+  label: The 12-Day Build
+  title: No experience? Spend 12 days on real projects.
+  body: Two live projects with The Adda Labs. Leave with proof you can show anyone.
+  price: ₹5,000
+  # Three things you get, from the /cohort "What you get" list.
+  gets:
+    - 2 live projects
+    - 3 reviews from me
+    - Full refund guarantee
+  cta: See how it works
+business:
+  line: Run a business and need help? The Adda Labs can help.
+  cta: Talk to The Adda Labs
+final:
   label: Free
-  title: The one page that got me finishing things.
-  body: Every week I write down what I want to do, when I'll do it, and whether I actually did it. That alone showed me where I was hesitating and where I was moving.
+  title: Start this week with one page.
   rows:
     - What I want to do
     - When I'll do it
     - Did I actually do it?
-  cta: Get the sheet
-  # Put the PDF in public/ with this name. Until it exists, the download step
-  # shows a TODO on previews.
-  file: /weekly-sheet.pdf
-  fileLabel: Download the weekly sheet (PDF)
-  story: Why I made it
-  storyHref: /notes/doing-more-planning-less
-now:
-  title: What I'm building this month.
-  more: See everything
-latest:
-  title: Watch, read, steal the process.
-work:
-  title: Things I've built and helped build.
-  # The Adda Labs always leads. Then these, by title, from content/work.md.
-  # TODO(Rohan): confirm which projects to feature first.
-  selected:
-    - TAL VI
-    - Shutterphrase
-    - TPC Pharma
-  more: All work
-crew:
-  title: I'm looking for 5 people who own their work.
-  body: I'll teach you the skills and how to start a business. You'll build real things with me. The best get a path into The Adda Labs.
-  cta: Apply for a seat
+  cta: Get the free sheet
 ---

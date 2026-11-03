@@ -33,7 +33,7 @@ export function isPlausibleEmail(value: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value.trim())
 }
 
-export async function addSubscriber(rawEmail: string): Promise<SubscribeResult> {
+export async function addSubscriber(rawEmail: string, source = 'unknown'): Promise<SubscribeResult> {
   const email = rawEmail.trim().toLowerCase()
   if (!isPlausibleEmail(email)) return { ok: false, reason: 'invalid' }
 
@@ -45,7 +45,7 @@ export async function addSubscriber(rawEmail: string): Promise<SubscribeResult> 
   const listId = process.env.SUBSCRIBE_LIST_ID
 
   if (provider === 'log') {
-    console.log(`[subscribe] would add: ${email}`)
+    console.log(`[subscribe] would add: ${email} (from ${source})`)
     return { ok: true }
   }
 
@@ -56,7 +56,7 @@ export async function addSubscriber(rawEmail: string): Promise<SubscribeResult> 
     try {
       await put(
         `subscribers/${id}.json`,
-        JSON.stringify({ email, consentedAt: new Date().toISOString() }),
+        JSON.stringify({ email, source, consentedAt: new Date().toISOString() }),
         { access: 'private', contentType: 'application/json', allowOverwrite: true },
       )
       return { ok: true }

@@ -16,17 +16,22 @@ type State = 'idle' | 'sending' | 'done' | 'error'
   gift: when the sign-up unlocks a free download (the weekly sheet), the
   success state hands it over right there. Nothing is emailed: the site has
   no sender, so the page is the delivery.
+  next: one link shown after the gift, so the next step is a tap away.
+  The id doubles as the source stored with the sign-up, which is how sheet
+  sign-ups are told apart from newsletter ones (Hobby drops custom events).
 */
 export default function NewsletterForm({
   tone = 'light',
   id = 'newsletter',
   cta = 'Subscribe',
   gift,
+  next,
 }: {
   tone?: 'light' | 'dark'
   id?: string
   cta?: string
   gift?: { href: string; label: string } | null
+  next?: { href: string; label: string }
 }) {
   const [email, setEmail] = useState('')
   const [consent, setConsent] = useState(false)
@@ -58,7 +63,7 @@ export default function NewsletterForm({
       const res = await fetch('/api/subscribe', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, consent, website: trap }),
+        body: JSON.stringify({ email, consent, website: trap, source: id }),
       })
       const data = await res.json()
       if (data.ok) {
@@ -90,6 +95,14 @@ export default function NewsletterForm({
         >
           {gift.label} <span className="arrow" aria-hidden="true">↓</span>
         </a>
+        {next && (
+          <Link
+            href={next.href}
+            className={`inline-block mt-5 font-body font-semibold underline decoration-accent decoration-2 underline-offset-[6px] ${dark ? 'text-paper' : 'text-ink'}`}
+          >
+            {next.label} <span className="arrow" aria-hidden="true">→</span>
+          </Link>
+        )}
       </div>
     )
   }

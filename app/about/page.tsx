@@ -111,9 +111,8 @@ export default function AboutPage() {
               <li key={b.title} data-reveal style={{ '--i': i } as CSSVars}>
                 <Link
                   href={b.href}
-                  className="group grid gap-3 md:grid-cols-[60px_1fr_auto] md:gap-10 md:items-baseline py-8 md:py-10 border-b border-paper/15"
+                  className="group grid gap-3 md:grid-cols-[1fr_auto] md:gap-10 md:items-baseline py-8 md:py-10 border-b border-paper/15"
                 >
-                  <span className="label text-paper/40">{String(i + 1).padStart(2, '0')}</span>
                   <span>
                     <span className="block display text-3xl sm:text-4xl md:text-5xl group-hover:text-accent transition-colors duration-200">
                       {b.title}

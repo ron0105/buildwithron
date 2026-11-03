@@ -4,7 +4,7 @@ import LiteYouTube from '@/components/ui/LiteYouTube'
 import type { EpisodeMeta, HomeCopy, NoteMeta } from '@/lib/content'
 import { youtubeId } from '@/lib/youtube'
 
-/* 03: the newest aired episode, then the three newest notes. */
+/* Latest: the newest aired episode, then the three newest notes. */
 export default function HomeLatest({
   copy,
   episode,
@@ -18,7 +18,7 @@ export default function HomeLatest({
 
   return (
     <section className="wrap section border-t border-ink/10">
-      <SectionHead n={3} label="Latest" title={copy.title} />
+      <SectionHead label={copy.label} title={copy.title} />
 
       {episode && id && (
         <div data-reveal className="mt-12 md:mt-16 grid gap-6 md:grid-cols-[1.6fr_1fr] md:gap-12 items-end">

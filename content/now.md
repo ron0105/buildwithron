@@ -3,7 +3,9 @@
 # Edit the list under each heading below, then change `updated`.
 # A line starting with "TODO" shows on previews only, never on the live site,
 # and a heading with nothing else under it is hidden on the live site.
-updated: Nov 2, 2026
+updated: Nov 3, 2026
+# The one honest line under the heading (brief v2, 5.1).
+honest: I don't know where this goes yet. That's the part worth documenting.
 # The fields below feed the /learn page's "coming up" line. Not shown on /now.
 live:
   status: scheduled
@@ -23,7 +25,8 @@ note:
 ## Building
 
 - Revamping this site, in public
-- Building The Founding Five
+- Opening The 12-Day Build, a paid 12-day programme on real projects for students and grads
+- Building a team of 5 people who own their work
 - Growing The Adda Labs
 
 ## Learning

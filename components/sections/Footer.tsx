@@ -11,6 +11,12 @@ const channels = [
   { label: 'The Adda Labs', href: OUTBOUND.tal },
 ]
 
+/* Pages that live only in the footer (brief section 3). */
+const site = [
+  { label: 'Now', href: '/now' },
+  { label: 'Join the team', href: '/team' },
+]
+
 const more = [
   { label: 'X', href: OUTBOUND.x },
   { label: 'GitHub', href: OUTBOUND.github },
@@ -56,6 +62,18 @@ export default function Footer({ newsletter = true }: { newsletter?: boolean }) 
                   >
                     {c.label} <span className="arrow text-accent" aria-hidden="true">→</span>
                   </a>
+                </li>
+              ))}
+            </ul>
+            <ul className="mt-8 flex flex-col gap-2">
+              {site.map((c) => (
+                <li key={c.label}>
+                  <Link
+                    href={c.href}
+                    className="inline-flex items-center gap-2 font-body text-base text-paper/80 hover:text-paper transition-colors duration-200"
+                  >
+                    {c.label} <span className="arrow text-accent" aria-hidden="true">→</span>
+                  </Link>
                 </li>
               ))}
             </ul>

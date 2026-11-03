@@ -28,7 +28,7 @@ export default function NewsletterPage() {
       <PageHero label="Newsletter" title="Notes from the build." sub="Sent only when something changes.">
         {hasSheet && (
           <p className="font-body text-base text-ink mb-5">
-            Sign up and you get the weekly sheet straight away.
+            Sign up and you get the free sheet straight away.
           </p>
         )}
         <NewsletterForm

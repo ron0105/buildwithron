@@ -12,7 +12,8 @@ export const metadata: Metadata = {
 /* Everything on this page comes from content/now.md, so updating it never
    means touching code. */
 export default function NowPage() {
-  const updated = getNow()?.updated
+  const now = getNow()
+  const updated = now?.updated
   const isProd = process.env.VERCEL_ENV === 'production'
   const sections = getNowSections().filter((s) => s.items.length > 0 || (!isProd && s.todo))
 
@@ -34,12 +35,19 @@ export default function NowPage() {
             Updated {updated}
           </p>
         )}
+        {now?.honest && (
+          <p
+            className="font-body text-lg md:text-xl text-muted mt-6 max-w-[44ch] leading-relaxed rise"
+            style={{ '--i': 3 } as React.CSSProperties}
+          >
+            {now.honest}
+          </p>
+        )}
 
         <div className="mt-16 md:mt-24 grid gap-x-16 gap-y-14 md:grid-cols-2">
           {sections.map((s, i) => (
             <div key={s.title} data-reveal style={{ '--i': i } as React.CSSProperties}>
-              <p className="label">{String(i + 1).padStart(2, '0')}</p>
-              <h2 className="font-heading font-bold text-3xl text-ink mt-2 pb-4 border-b border-ink">
+              <h2 className="font-heading font-bold text-3xl text-ink pb-4 border-b border-ink">
                 {s.title}
               </h2>
               {s.items.length > 0 && (

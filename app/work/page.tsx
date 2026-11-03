@@ -47,8 +47,6 @@ export default function WorkPage() {
                 </div>
                 <div className={`p-6 md:p-10 flex flex-col ${i % 2 === 1 ? 'md:border-r' : 'md:border-l'} border-ink`}>
                   <p className="label flex flex-wrap items-center gap-x-3 gap-y-1">
-                    <span>{String(i + 1).padStart(2, '0')}</span>
-                    <span aria-hidden="true">·</span>
                     <span className={p.status === 'Active' ? 'text-accent' : ''}>{p.status}</span>
                     <span aria-hidden="true">·</span>
                     <span>{p.year}</span>

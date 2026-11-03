@@ -34,6 +34,7 @@ export type LiveStatus = {
 }
 export type NowData = {
   updated: string
+  honest?: string
   building: NowItem
   episode: NowItem
   note: NowItem
@@ -53,32 +54,21 @@ export type HomeCopy = {
   hero: {
     label: string
     lines: string[]
+    strike: string
+    underline: string
     sub: string
-    for: string
-    watch: string
-    notes: string
+    small: string
+    cta: string
+    cohort: string
     photo: string
     photoAlt: string
   }
-  sheet: {
-    label: string
-    title: string
-    body: string
-    rows: string[]
-    cta: string
-    file: string
-    fileLabel: string
-    story: string
-    storyHref: string
-  }
-  now: { title: string; more: string }
-  latest: { title: string }
-  work: {
-    title: string
-    selected: string[]
-    more: string
-  }
-  crew: { title: string; body: string; cta: string }
+  sheet: { file: string; fileLabel: string; next: string }
+  proof: { label: string; title: string; selected: string[]; more: string }
+  latest: { label: string; title: string }
+  cohort: { label: string; title: string; body: string; price: string; gets: string[]; cta: string }
+  business: { line: string; cta: string }
+  final: { label: string; title: string; rows: string[]; cta: string }
 }
 
 export type Project = {
@@ -102,17 +92,19 @@ export function getWork(): WorkCopy {
   return data as WorkCopy
 }
 
-export type CrewCopy = {
+export type TeamCopy = {
+  label: string
   title: string
   body: string
+  earned: string
   culture: string
-  steps: { title: string; text: string }[]
-  apply: { cta: string; note: string }
+  steps: string[]
+  cta: string
 }
 
-export function getCrew(): CrewCopy {
-  const { data } = matter(fs.readFileSync(path.join(CONTENT_DIR, 'crew.md'), 'utf-8'))
-  return data as CrewCopy
+export function getTeam(): TeamCopy {
+  const { data } = matter(fs.readFileSync(path.join(CONTENT_DIR, 'team.md'), 'utf-8'))
+  return data as TeamCopy
 }
 
 export type AboutCopy = {
@@ -196,4 +188,35 @@ export function getEpisode(slug: string) {
   const entry = readCollection('learn').find((e) => e.slug === slug)
   if (!entry) return null
   return { meta: { slug, ...entry.data } as EpisodeMeta, content: entry.content }
+}
+
+type Todo = { todo?: string }
+type Block = { title: string; text: string }
+
+export type CohortCopy = {
+  hero: { label: string; title: string; sub: string; facts: string[]; cta: string } & Todo
+  for: Block
+  notFor: Block
+  gets: { title: string; items: string[] }
+  steps: { title: string; items: string[] } & Todo
+  after: Block
+  promise: Block & Todo
+  expect: Block
+  faq: { title: string; items: ({ q: string; a?: string } & Todo)[] }
+  final: { title: string; cta: string; notReady: string }
+  apply: {
+    label: string
+    title: string
+    sub: string
+    payment: string
+    task: { label: string; prompt: string } & Todo
+    why: string
+    cta: string
+    done: { title: string; text: string } & Todo
+  }
+}
+
+export function getCohort(): CohortCopy {
+  const { data } = matter(fs.readFileSync(path.join(CONTENT_DIR, 'cohort.md'), 'utf-8'))
+  return data as CohortCopy
 }

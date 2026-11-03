@@ -3,14 +3,15 @@ import Footer from '@/components/sections/Footer'
 
 export const metadata = {
   title: 'Privacy · Rohan Tiwarekar',
-  description: 'What I collect when you join the list, why, and how to get it removed.',
+  description: 'What I collect when you join the list or apply for The 12-Day Build, why, and how to get it removed.',
 }
 
 /*
   LAWYER-REVIEW DRAFT. Master CLAUDE.md Part 11 requires a real review before
   this is treated as final. Written against India's DPDP Act 2023 for the only
-  personal data this site collects: an email address, given with consent, for
-  one purpose.
+  personal data this site collects: an email address for the list, and a
+  cohort application (name, WhatsApp, city, college, two answers), each given
+  with consent for one purpose.
 
   Deliberately in English only. Translating a legal notice risks changing what
   it means, so the switcher does not apply here and the page says so.
@@ -25,12 +26,12 @@ export default function PrivacyPage() {
             Privacy
           </span>
           <h1 className="font-heading font-bold text-[clamp(2.2rem,7vw,4rem)] leading-[1.05] tracking-tight text-ink">
-            What I do with your email<span className="text-accent">.</span>
+            What I do with your data<span className="text-accent">.</span>
           </h1>
 
           <div className="mt-12 space-y-10 font-body text-base sm:text-lg text-ink/75 leading-relaxed">
             <p className="text-ink/50 text-sm">
-              Last updated 5 October 2026. This page is in English only, because
+              Last updated 3 November 2026. This page is in English only, because
               translating a legal notice risks changing what it means.
             </p>
 
@@ -42,6 +43,21 @@ export default function PrivacyPage() {
                 Your email address, and only if you type it into the form and tick
                 the consent box yourself. Nothing else. I do not ask for your name,
                 your company, or anything about you.
+              </p>
+            </div>
+
+            <div>
+              <h2 className="font-heading text-xl font-bold text-ink mb-3">
+                If you apply for The 12-Day Build
+              </h2>
+              <p>
+                The application asks for your name, WhatsApp number, city, college
+                or last course, why you want to join, and your answer to a small
+                task. I use it only to decide on your place and to contact you on
+                WhatsApp about it. It sits in the same private storage as the
+                list. I keep it for 6 months from the day you apply, then delete
+                it. If you join, I keep what I need to run the programme. Ask me
+                any time and I will delete it sooner.
               </p>
             </div>
 
@@ -100,9 +116,8 @@ export default function PrivacyPage() {
               </h2>
               <p>
                 This site uses Vercel Analytics, which counts page views without
-                cookies and without building a profile of you. Your language and
-                light or dark mode preference are stored in your own browser and
-                never sent to me.
+                cookies and without building a profile of you. Nothing else is
+                stored in your browser.
               </p>
             </div>
 

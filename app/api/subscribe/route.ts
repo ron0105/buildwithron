@@ -6,12 +6,14 @@ export async function POST(request: Request) {
   let email: unknown
   let consent: unknown
   let trap: unknown
+  let source: unknown
 
   try {
     const body = await request.json()
     email = body?.email
     consent = body?.consent
     trap = body?.website
+    source = body?.source
   } catch {
     return NextResponse.json({ ok: false, reason: 'invalid' }, { status: 400 })
   }
@@ -32,7 +34,11 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: false, reason: 'invalid' }, { status: 400 })
   }
 
-  const result = await addSubscriber(email)
+  /* Which form it came from (the form's id). Kept short and plain so it can't
+     carry anything else into storage. */
+  const from = typeof source === 'string' && /^[a-z-]{1,32}$/.test(source) ? source : 'unknown'
+
+  const result = await addSubscriber(email, from)
 
   if (result.ok) return NextResponse.json({ ok: true })
 

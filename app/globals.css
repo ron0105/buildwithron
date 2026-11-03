@@ -179,9 +179,11 @@ body:has(.card-palette) {
    CSS and IntersectionObserver only. Only transform, opacity and
    stroke-dashoffset move. Everything below collapses under reduced motion. */
 
-/* M1: hero lines rise and fade in, 120ms apart. Set --i on each line. */
+/* M1: hero lines rise and fade in, 120ms apart. Set --i on each line.
+   Starts at 0.01, not 0: Chrome skips fully transparent text when it times
+   the largest paint, which tied the hero's score to JS load (88 vs 100). */
 @keyframes rise {
-  from { opacity: 0; transform: translateY(16px); }
+  from { opacity: 0.01; transform: translateY(16px); }
   to   { opacity: 1; transform: none; }
 }
 .rise {

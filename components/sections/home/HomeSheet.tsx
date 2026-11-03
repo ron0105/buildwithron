@@ -1,46 +1,39 @@
-import Link from 'next/link'
 import SectionHead from '@/components/ui/SectionHead'
 import NewsletterForm from '@/components/ui/NewsletterForm'
 import Todo from '@/components/ui/Todo'
 import type { HomeCopy } from '@/lib/content'
 
-/* 02: the free thing. Give before asking: one real tool that fixes a small
-   part of the problem, handed over the moment someone signs up. The sheet
-   on the right is a sketch of the real one, so people see what they get. */
+/* The last ask on the page: the same free sheet as the hero, for people who
+   scrolled to the end first. The sketch on the right shows the real sheet's
+   three rows, so people see what they get before they sign up. */
 export default function HomeSheet({
   copy,
-  hasFile,
+  sheet,
 }: {
-  copy: HomeCopy['sheet']
-  hasFile: boolean
+  copy: HomeCopy['final']
+  sheet: { href: string; label: string; next: string } | null
 }) {
   return (
     <section id="sheet" className="wrap section border-t border-ink/10 scroll-mt-16">
       <div className="grid gap-12 md:grid-cols-[1.2fr_1fr] md:gap-16 items-center">
         <div>
-          <SectionHead n={2} label={copy.label} title={copy.title} />
+          <SectionHead label={copy.label} title={copy.title} />
           <p data-reveal className="font-body text-lg text-muted mt-6 max-w-[46ch] leading-relaxed">
-            {copy.body}
+            {copy.rows.map((r) => (r.endsWith('?') ? r : `${r}.`)).join(' ')}
           </p>
           <div data-reveal className="mt-8">
             <NewsletterForm
               id="sheet-signup"
               cta={copy.cta}
-              gift={hasFile ? { href: copy.file, label: copy.fileLabel } : null}
+              gift={sheet}
+              next={sheet ? { href: '/cohort', label: sheet.next } : undefined}
             />
-            {!hasFile && (
+            {!sheet && (
               <div className="mt-3">
-                <Todo>add the sheet PDF at public{copy.file}</Todo>
+                <Todo>add the sheet PDF in public/</Todo>
               </div>
             )}
           </div>
-          <Link
-            href={copy.storyHref}
-            data-reveal
-            className="inline-flex items-center gap-2 mt-8 font-body font-semibold text-ink underline decoration-accent decoration-2 underline-offset-[6px]"
-          >
-            {copy.story} <span className="arrow" aria-hidden="true">→</span>
-          </Link>
         </div>
 
         {/* Sketch of the sheet. Decorative, so hidden from screen readers;
@@ -59,7 +52,7 @@ export default function HomeSheet({
                     {i === copy.rows.length - 1 ? (
                       <span className="relative inline-block">
                         {row}
-                        {/* The second of the site's hand-drawn marks: a loose
+                        {/* One of the site's hand-drawn marks: a loose
                             circle round the question that matters. */}
                         <svg
                           className="draw absolute -inset-x-3 -inset-y-2 w-[calc(100%+24px)] h-[calc(100%+16px)] text-accent overflow-visible"
